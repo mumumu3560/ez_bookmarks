@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "168553132288",
+    "project_id": "ez-bookmarks-68e0f",
+    "storage_bucket": "ez-bookmarks-68e0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168553132288:android:d13a547e7ba3ed117103e5",
+        "android_client_info": {
+          "package_name": "com.divcurious.bookmarks_with_tags"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOlpnuUa-pFHyJ-u-2OlxU6zAp1oj-nNQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168553132288:android:111cb617402211db7103e5",
+        "android_client_info": {
+          "package_name": "com.example.ez_bookmarks"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOlpnuUa-pFHyJ-u-2OlxU6zAp1oj-nNQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
