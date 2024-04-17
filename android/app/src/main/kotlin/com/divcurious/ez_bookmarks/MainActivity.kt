@@ -1,4 +1,4 @@
-package com.example.ez_bookmarks
+package com.divcurious.ez_bookmarks
 
 import io.flutter.embedding.android.FlutterActivity
 
