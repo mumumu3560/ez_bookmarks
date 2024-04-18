@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
+import 'package:ez_bookmarks/pages/database_management/components/almost_view/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:ez_bookmarks/drift/database_1/database.dart'; // 正しいパスに修正してください
 
 import 'package:ez_bookmarks/utils/various.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:path/path.dart' as p;
 
@@ -34,7 +36,7 @@ class _DatabaseManagementPageState extends State<DatabaseManagementPage> {
     if(Platform.isWindows){
       path = await FilePicker.platform.saveFile(
         dialogTitle: 'バックアップを保存する場所を選択してください',
-        fileName: 'database_backup.sqlite',
+        fileName: 'ezb_backup.sqlite',
         bytes: Uint8List(0),
       );
     }
@@ -42,7 +44,7 @@ class _DatabaseManagementPageState extends State<DatabaseManagementPage> {
     if(Platform.isAndroid){
 
       path = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS);
-      path = p.join(path, 'database_backup.sqlite');
+      path = p.join(path, 'ezb_backup.sqlite');
 
     }
 
@@ -89,32 +91,29 @@ class _DatabaseManagementPageState extends State<DatabaseManagementPage> {
     }
   }
 
-  void _showImportHelpDialog(){
-
-  }
-
-  void _showBackupHelpDialog(){
-
-  }
 
 
-  Future<void> importDatabase() async {
+  Future<void> importDatabase(String dbName) async {
     final FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null && result.files.single.path != null) {
       final String path = result.files.single.path!;
       await myDatabase.importDatabase(path);
 
-      myDatabase = MyDatabase(); // データベースを再作成
+      myDatabase = MyDatabase(dbName: dbName); // データベースを再作成
 
       if(mounted){
         context.showSuccessSnackBar(message: 'データベースがインポートされました');
       }
-      // 必要に応じてアプリケーションの再起動やデータベースの再読み込みを行う
+      // 必要に応じてアプリケーションの再起動やデータベースの再読み込みする
     }
   }
 
  @override
 Widget build(BuildContext context) {
+
+  //ここでdbNameをriverpodから取得
+  //final dbName = 
+
   return Scaffold(
     appBar: AppBar(
       title: const Text('データベース管理'),
@@ -126,8 +125,10 @@ Widget build(BuildContext context) {
             child: SingleChildScrollView( // Allows the page to be scrollable
               padding: const EdgeInsets.all(20.0), // Adds padding around the content
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start, // Aligns text to the start of the app
+                crossAxisAlignment: CrossAxisAlignment.center, // Aligns text to the start of the app
                 children: <Widget>[
+
+                  
                   Row(
                     children: [
                       Text(
@@ -136,15 +137,15 @@ Widget build(BuildContext context) {
                       ),
             
                       IconButton(
-                        onPressed: _showImportHelpDialog, 
+                        onPressed: () => showImportHelpDialog(context),
                         icon: const Icon(Icons.help)
                       )
                     ],
                   ),
             
                   ElevatedButton(
-                    onPressed: importDatabase, 
-                    child: const Text("データベースをインポートする")
+                    onPressed: () => importDatabase("ez_database.db"), 
+                    child: const Text("インポートする")
                   ),
             
             
@@ -155,7 +156,9 @@ Widget build(BuildContext context) {
                         style: Theme.of(context).textTheme.titleLarge
                       ),
                       IconButton(
-                        onPressed: _showBackupHelpDialog, 
+                        onPressed: () async{
+                          showBackupHelpDialog(context);
+                        } , 
                         icon: const Icon(Icons.help)
                       )
                     ],
@@ -163,7 +166,7 @@ Widget build(BuildContext context) {
             
                   ElevatedButton(
                     onPressed: backupDatabase, 
-                    child: const Text("データベースをバックアップする")
+                    child: const Text("バックアップする")
                   ),
             
                 ],
