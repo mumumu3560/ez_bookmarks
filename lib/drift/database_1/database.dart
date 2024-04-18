@@ -169,7 +169,7 @@ class Settings extends Table {
 // 両方のテーブルを含める
 @DriftDatabase(tables: [Bookmarks, Tags, TaggedBookmarks, GenreColors, Settings, Genres])
 class MyDatabase extends _$MyDatabase {
-  MyDatabase() : super(_openConnection());
+  MyDatabase() : super(_openConnection("ez_database"));
   @override
   int get schemaVersion => 20;
 
@@ -979,11 +979,11 @@ Future<List<Genre>> allGenres() async {
     }
   }
 
+  /*
   Future<int> getTheme() async {
   try {
     // settingsテーブルからIDが0のレコードを取得
     final themeMode = await (select(settings)..where((s) => s.id.equals(0))).getSingle();
-    print(themeMode);
     // themeModeがnullではない場合、その値を返す
     return themeMode.themeMode ?? 0;
   } catch (e) {
@@ -993,6 +993,27 @@ Future<List<Genre>> allGenres() async {
     return 1;
   }
 }
+   */
+
+Future<int> getTheme() async {
+  try {
+    // settingsテーブルからIDが0のレコードを取得
+    final themeMode = await (select(settings)..where((s) => s.id.equals(0))).getSingleOrNull();
+    // themeModeがnullの場合、デフォルト値として1を返す
+    if (themeMode == null) {
+      print("設定が見つかりません。デフォルトを使用します。");
+      myDatabase.insertTheme(); // デフォルトのテーマをデータベースに挿入
+      return 1;
+    }
+    // themeModeがnullではない場合、その値を返す
+    return themeMode.themeMode ?? 1; // themeModeがnullでなければその値、そうでなければ1を返す
+  } catch (e) {
+    // 予期しないエラーが発生した場合に-1を返す
+    print('Error: $e');
+    return 0;
+  }
+}
+
 
 
   Future<int> updateTheme(int themeMode) async{
@@ -1004,6 +1025,7 @@ Future<List<Genre>> allGenres() async {
   }
 
 
+  /*
   //axisCountを取得
   Future<int> getAxisCount() async {
     try {
@@ -1022,6 +1044,29 @@ Future<List<Genre>> allGenres() async {
         : 2;
     }
   }
+   */
+
+
+  Future<int> getAxisCount() async {
+  try {
+    // settingsテーブルからIDが0のレコードを取得し、存在しない場合はnullを返す
+    final axisCount = await (select(settings)..where((s) => s.id.equals(0))).getSingleOrNull();
+    if (axisCount == null) {
+      return SizeConfig.screenWidth! > 600 ? 4 : 2;
+    }
+    return SizeConfig.screenWidth! > 600 
+      ? axisCount.axisCount ?? 4 
+      : axisCount.axisCount ?? 2;
+  } catch (e) {
+    // 予期しないエラーが発生した場合
+    print('Error: $e');
+    return SizeConfig.screenWidth! > 600 ? 4 : 2;
+  }
+}
+
+
+
+
 
   //axisCountを更新
   Future<int> updateAxisCount(int axisCount) async{
@@ -1032,6 +1077,31 @@ Future<List<Genre>> allGenres() async {
     );
   }
 
+
+
+  
+
+
+  Future<double> getAspectRatio() async {
+  try {
+    // settingsテーブルからIDが0のレコードを取得し、存在しない場合はnullを返す
+    final aspectRatio = await (select(settings)..where((s) => s.id.equals(0))).getSingleOrNull();
+    if (aspectRatio == null) {
+      return SizeConfig.screenWidth! > 600 ? 0.75 : 0.4;
+    }
+    return SizeConfig.screenWidth! > 600 
+      ? aspectRatio.aspectRatio ?? 0.75 
+      : aspectRatio.aspectRatio ?? 0.4;
+  } catch (e) {
+    // 予期しないエラーが発生した場合
+    print('Error: $e');
+    return SizeConfig.screenWidth! > 600 ? 0.75 : 0.4;
+  }
+}
+
+
+  /*
+  
   //AspectRatioを取得
   Future<double> getAspectRatio() async {
     try {
@@ -1050,6 +1120,7 @@ Future<List<Genre>> allGenres() async {
         : 0.4;
     }
   }
+   */
 
   //AspectRatioを更新
   Future<int> updateAspectRatio(double aspectRatio) async{
@@ -1108,7 +1179,7 @@ Future<List<Genre>> allGenres() async {
 
     await myDatabase.close(); // 最初にデータベース接続を閉じる
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'my_database.sqlite'));
+    final file = File(p.join(dbFolder.path, 'ez_database.sqlite'));
 
     await file.delete();
     await File(newPath).copy(file.path);
@@ -1138,10 +1209,11 @@ Future<List<Genre>> allGenres() async {
 
 }
 
-LazyDatabase _openConnection() {
+LazyDatabase _openConnection(String dbName) {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'my_database.sqlite'));
+    final fileName = '$dbName.sqlite';
+    final file = File(p.join(dbFolder.path, fileName));
 
     // Also work around limitations on old Android versions
     if (Platform.isAndroid) {
