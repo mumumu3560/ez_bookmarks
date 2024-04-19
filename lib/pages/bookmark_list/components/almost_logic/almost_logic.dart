@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' show parse;
+import 'package:url_launcher/url_launcher.dart';
 
 
 /*
@@ -72,39 +73,6 @@ Future<Map<int,List<int>>> calcSums (BuildContext context, Bookmark bookmark, Li
 
 
 
-Future<String?> fetchURLData(String url) async {
-
-    try {
-      final response = await http.get(Uri.parse(url));
-
-      if (response.statusCode == 200) {
-        var document = parse(response.body);
-        var metas = document.head!.getElementsByTagName('meta');
-        Image? image;
-        String? imageUrl;
-
-        for(var meta in metas){
-          if (meta.attributes['property'] == 'og:image') {
-            image = Image.network(
-              meta.attributes['content']!,
-            );   
-            imageUrl = meta.attributes['content']!;
-          }
-        }
-
-        //return image!;
-        return imageUrl!;
-      }
-      else{
-        //return Image.asset('assets/images/no_image.png');
-        return null;
-
-      }
-    } catch (e) {
-      //return Image.asset('assets/images/no_image.png');
-      return null;
-    }
-  }
 
 
 
@@ -129,24 +97,85 @@ Future<String?> fetchURLData(String url) async {
 
 
 Future<Widget> loadImage(String? imagePath, String? url) async {
+
+  print("現在のimagePathは: $imagePath");
+  print("現在のurlは: $url");
   if (imagePath != null) {
     bool exists = await File(imagePath).exists();
     if (exists) {
       return Image.file(File(imagePath), fit: BoxFit.cover);
     }
+    
   }
   
   if (url != null) {
     try {
-      String? imageUrl = await fetchURLData(url);
+      //String? imageUrl = await fetchURLData(url);
+      String? imageUrl;
       if (imageUrl != null) {
         return Image.network(imageUrl, fit: BoxFit.cover);
       }
+
+
     } catch (e) {
-      // Log error or handle exception
+      return Image.asset('assets/images/no_image.png', fit: BoxFit.cover);
     }
   }
   
   // デフォルトの画像を返す
   return Image.asset('assets/images/no_image.png', fit: BoxFit.cover);
 }
+
+
+
+
+
+Future<String?> fetchURLData(String url) async {
+
+    try {
+      print("fetchURLData: $url");
+
+      Uri? uri = Uri.tryParse(url);
+
+      if (uri == null || !uri.hasAbsolutePath || uri.host.isEmpty) {
+        print("Invalid URL");
+        return null;
+      }
+
+      print("ここまでは行けそうですか？");
+
+      final response = await http.get(Uri.parse(url));
+
+      print("ここには来ないのか？");
+
+      print(url);
+      print("response.statusCode: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        var document = parse(response.body);
+        var metas = document.head!.getElementsByTagName('meta');
+        String? imageUrl;
+
+        for(var meta in metas){
+          if (meta.attributes['property'] == 'og:image') {
+
+            imageUrl = meta.attributes['content']!;
+          }
+        }
+
+        //return image!;
+        return imageUrl!;
+      }
+      else{
+        //return Image.asset('assets/images/no_image.png');
+        return null;
+
+      }
+
+
+    } catch (e) {
+      print("ここはfinal response = await http.get(Uri.parse(url))の結果がおかしかったとき。");
+      //return Image.asset('assets/images/no_image.png');
+      return null;
+    }
+  }

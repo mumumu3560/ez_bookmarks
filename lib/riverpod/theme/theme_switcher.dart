@@ -15,8 +15,6 @@ class ThemeModeSwitcherNotifier extends _$ThemeModeSwitcherNotifier{
 
   //ここでthemeModeを変更する。
   Future<void> updateState(int themeId) async{
-    print('themeId: $themeId');
-    print('state: $state');
     state = AsyncValue.data(themeId);
   }
 

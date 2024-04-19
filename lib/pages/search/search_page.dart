@@ -1,6 +1,7 @@
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/bookmark_list_page.dart';
 import 'package:ez_bookmarks/pages/search/components/almost_logic/almost_logic.dart';
+import 'package:ez_bookmarks/pages/search/components/almost_view/dialogs.dart';
 import 'package:ez_bookmarks/riverpod/desc_or_asc/desc_or_asc_switcher.dart';
 import 'package:ez_bookmarks/riverpod/sort_bookmarks/sort_kind_switcher.dart';
 import 'package:ez_bookmarks/utils/various.dart';
@@ -39,6 +40,29 @@ class _SearchPageState extends ConsumerState<SearchPage> {
     _tagsByGenre = getTagsByGenre();
     initFetch();
   }
+/*
+
+  void showSearchHelpDialog(BuildContext context ){
+    showDialog(
+      context: context, 
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("検索の使い方"),
+          content: Text("a"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              }, 
+              child: const Text("閉じる"),
+            ),
+          ],
+        );
+      },
+    );
+
+  }
+ */
 
 
   //全てのジャンルを取得
@@ -78,22 +102,6 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                       _genreController.text = genre.genre ?? "";
                     },
                   )).toList(),
-
-
-
-                /*
-                Wrap(
-                  spacing: 8.0,
-                  runSpacing: 8.0,
-                  children: genreColors.map((genreColor) => ActionChip(
-                    label: Text(genreColor.genre),
-                    onPressed: () {
-                      _genreController.text = genreColor.genre;
-                    },
-                  )).toList(),
-                 */
-
-
                 
                 ),
               ],
@@ -181,6 +189,12 @@ class _SearchPageState extends ConsumerState<SearchPage> {
 
       appBar: AppBar(
         title: const Text("タグ編集&検索"),
+        actions: [
+          IconButton(
+            onPressed: () => showSearchHelpDialog(context),
+            icon: const Icon(Icons.help),
+          ),
+        ],
       ),
 
 

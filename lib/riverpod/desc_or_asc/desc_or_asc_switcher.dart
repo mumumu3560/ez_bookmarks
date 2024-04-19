@@ -7,7 +7,7 @@ class DescOrAscSwitcherNotifier extends _$DescOrAscSwitcherNotifier{
 
   @override
   bool build() {
-    //databaseが初期化されていない場合は、ライトモードを返す。
+    //最初は降順で返す。
     bool isDesc = true;
     return isDesc;
   }

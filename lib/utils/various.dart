@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 //https://qiita.com/kokogento/items/87aaf0a0fbc192e51504
 
-MyDatabase myDatabase = MyDatabase();
+//MyDatabase myDatabase = MyDatabase(dbName: "ez_database.sqlite");
 
 
 const unexpectedErrorMessage = '予期せぬエラーが起きました';

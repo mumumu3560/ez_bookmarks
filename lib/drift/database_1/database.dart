@@ -617,7 +617,7 @@ class MyDatabase extends _$MyDatabase {
     }
     
     //全てのブックマークのindexとcreatedAtをprintする
-
+    /*
     for(int i = 0; i < nowBookmarks.length; i++){
       print("index: $i, createdAt: ${nowBookmarks[i].createdAt}");
     }
@@ -625,6 +625,8 @@ class MyDatabase extends _$MyDatabase {
     for(int i = 0; i < nowBookmarks.length; i++){
       print("index: $i, updatedAt: ${nowBookmarks[i].updatedAt}");
     }
+     */
+    
 
     if(isDesc == false){
       nowBookmarks = nowBookmarks.reversed.toList();

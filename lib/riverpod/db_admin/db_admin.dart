@@ -18,11 +18,24 @@ class DbAdminNotifier extends _$DbAdminNotifier{
 
   //ここでdb変更。
   //ez_database、ez_database_1、ez_database_2のいずれかを引数に取る。
-  Future<void> updateState(String db) async{
+  Future<void> updateDB(String db) async{
     //myDatabaseをいったん破棄して、新しいdbを作成する。
     await state.close();
     state = MyDatabase(dbName: db);
   }
+
+  //ここでテーマ変更。
+  Future<void> updateTheme(int themeId) async{
+    state.updateTheme(themeId);
+  }
+
+  Future<int> getTheme(){
+    return state.getTheme();
+  }
+
+  
+
+
 
 
 }

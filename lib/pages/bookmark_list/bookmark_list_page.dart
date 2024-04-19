@@ -409,18 +409,19 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
                     }
                     else{
                       //ここに広告
-                      return Container(
-                        //height: SizeConfig.blockSizeVertical! * 10,
-                        color: Colors.white,
-                        //TODO Admob
-                        child: InlineAdaptiveAdBanner(
-                          requestId: "BOOKMARK", 
-                          adHeight: SizeConfig.blockSizeVertical!.toInt() * 20,
-                        ),
-
-                        /*
-                        
-                        */
+                      return LayoutBuilder(
+                        builder: (context, constraints){
+                          return Container(
+                            //height: SizeConfig.blockSizeVertical! * 10,
+                            //color: Colors.white,
+                            //TODO Admob
+                            child: InlineAdaptiveAdBanner(
+                              requestId: "BOOKMARK", 
+                              //adHeight: SizeConfig.blockSizeVertical!.toInt() * 10,
+                              adHeight: constraints.maxHeight.toInt(),
+                            ),
+                          );
+                        }
                       );
 
                     }
