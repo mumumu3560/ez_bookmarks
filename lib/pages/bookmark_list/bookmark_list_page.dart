@@ -6,6 +6,7 @@ import 'package:ez_bookmarks/pages/add_bookmark/add_bookmark_page.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/drawer.dart';
 import 'package:ez_bookmarks/riverpod/aspect/aspect_switcher.dart';
 import 'package:ez_bookmarks/riverpod/axis_count/axis_count_switcher.dart';
+import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/desc_or_asc/desc_or_asc_switcher.dart';
 import 'package:ez_bookmarks/riverpod/sort_bookmarks/sort_kind_switcher.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -66,6 +67,8 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
     final descOrAsc = ref.watch(descOrAscSwitcherNotifierProvider);
 
     final sortKind = ref.watch(sortKindSwitcherNotifierProvider);
+
+    final dbAd = ref.watch(dbAdminNotifierProvider);
 
 
     return Scaffold(
@@ -342,9 +345,10 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
                */
 
               stream: widget.tags == null
-                ? Stream.fromFuture(myDatabase.findBookmarksContainingAllTags([], sortKind, descOrAsc))
-                : Stream.fromFuture(myDatabase.findBookmarksContainingAllTags(widget.tags!, sortKind, descOrAsc)),
-
+                //? Stream.fromFuture(myDatabase.findBookmarksContainingAllTags([], sortKind, descOrAsc))
+                //: Stream.fromFuture(myDatabase.findBookmarksContainingAllTags(widget.tags!, sortKind, descOrAsc)),
+                ? Stream.fromFuture(dbAd.findBookmarksContainingAllTags([], sortKind, descOrAsc))
+                : Stream.fromFuture(dbAd.findBookmarksContainingAllTags(widget.tags!, sortKind, descOrAsc)),
               
                              
                 

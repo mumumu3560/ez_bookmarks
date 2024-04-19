@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:ez_bookmarks/drift/database_1/database.dart';
+import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/utils/various.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' show parse;
@@ -14,8 +16,9 @@ import 'package:url_launcher/url_launcher.dart';
  */
 
 //ここではブックマークが含むタグをreturn
-Future<int> calcContainBookmarks(List<Tag> tags, String sortBy, bool isDesc) async{
-  final filterdList = await myDatabase.findBookmarksContainingAllTags(tags, sortBy, isDesc);
+Future<int> calcContainBookmarks(WidgetRef ref, List<Tag> tags, String sortBy, bool isDesc) async{
+  //final filterdList = await myDatabase.findBookmarksContainingAllTags(tags, sortBy, isDesc);
+  final filterdList = await ref.watch(dbAdminNotifierProvider).findBookmarksContainingAllTags(tags, sortBy, isDesc);
   return filterdList.length;
 }
 
@@ -38,22 +41,30 @@ String formatCreatedAt(DateTime createdAt) {
   }
 }
 
+
+
+
+
+
+
 //ここではそのタグのみを含むブックマークと、そのタグ＋他のタグを含むブックマークの数を計算する。
-Future<Map<int,List<int>>> calcSums (BuildContext context, Bookmark bookmark, List<Tag>? tags, String sortBy, bool isDesc) async{
+Future<Map<int,List<int>>> calcSums (WidgetRef ref,  BuildContext context, Bookmark bookmark, List<Tag>? tags, String sortBy, bool isDesc) async{
   List<int> tagSums = [];
   List<int> tagSumOnlys = [];
 
   for(int i = 0; i < bookmark.tags!.length; i++){
-    final tagId = await myDatabase.getTagIdByName(bookmark.tags![i]);
-    final tag = await myDatabase.getTagById(tagId!);
+    //final tagId = await myDatabase.getTagIdByName(bookmark.tags![i]);
+    final tagId = await ref.read(dbAdminNotifierProvider).getTagIdByName(bookmark.tags![i]);
+    //final tag = await myDatabase.getTagById(tagId!);
+    final tag = await ref.read(dbAdminNotifierProvider).getTagById(tagId!);
 
     final List<Tag> updatedTags = List.from(tags ?? []);
     updatedTags.add(tag);
 
-    final tagSum = await calcContainBookmarks(updatedTags, sortBy, isDesc);
+    final tagSum = await calcContainBookmarks(ref, updatedTags, sortBy, isDesc);
     tagSums.add(tagSum);
 
-    final tagSumOnly = await calcContainBookmarks([tag], sortBy, isDesc);
+    final tagSumOnly = await calcContainBookmarks(ref, [tag], sortBy, isDesc);
     tagSumOnlys.add(tagSumOnly);
   }
 
