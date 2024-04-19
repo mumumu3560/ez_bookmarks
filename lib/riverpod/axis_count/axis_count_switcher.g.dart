@@ -7,7 +7,7 @@ part of 'axis_count_switcher.dart';
 // **************************************************************************
 
 String _$axisCountSwitcherNotifierHash() =>
-    r'0c73b1ec0b57564eb97df82aadc3d8275c910ae6';
+    r'225f543fed7689dc6ae74e4cc3bb7d082f4a5aa3';
 
 /// See also [AxisCountSwitcherNotifier].
 @ProviderFor(AxisCountSwitcherNotifier)
