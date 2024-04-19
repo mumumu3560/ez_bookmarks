@@ -2,6 +2,7 @@ import 'package:ez_bookmarks/drift/database_1/database.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/bookmark_list_page.dart';
 import 'package:ez_bookmarks/riverpod/aspect/aspect_switcher.dart';
 import 'package:ez_bookmarks/riverpod/axis_count/axis_count_switcher.dart';
+import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/sort_bookmarks/sort_kind_switcher.dart';
 import 'package:ez_bookmarks/utils/various.dart';
 import 'package:flutter/material.dart';
@@ -96,9 +97,11 @@ void showConfirmDialog(BuildContext context, Function onDelete) {
 
 
 //ここではタグ選択ダイアログを表示する。
-void showBookmarkTagsDialog(BuildContext context, Bookmark bookmark, /* */List<int> tagSums, List<int> tagSumOnly, List<Tag>? tags) {
+void showBookmarkTagsDialog(WidgetRef ref, BuildContext context, Bookmark bookmark, /* */List<int> tagSums, List<int> tagSumOnly, List<Tag>? tags) {
   // チェックボックスの状態を管理する変数
   bool includeWidgetTags = false;
+
+  final dbAd = ref.watch(dbAdminNotifierProvider);
 
   showDialog(
     context: context,
@@ -117,8 +120,15 @@ void showBookmarkTagsDialog(BuildContext context, Bookmark bookmark, /* */List<i
                       final tagIndex = bookmark.tags!.indexOf(tag);
                       return ActionChip(
                         onPressed: () async {
-                          final tagId = await myDatabase.getTagIdByName(tag);
-                          final thisTag = await myDatabase.getTagById(tagId!);
+                          //final tagId = await myDatabase.getTagIdByName(tag);
+                          final tagId = await dbAd.getTagIdByName(tag);
+
+
+                          //final thisTag = await myDatabase.getTagById(tagId!);
+
+                          final thisTag = await dbAd.getTagById(tagId!);
+
+                          
                           if(context.mounted){
                             final List<Tag> updatedTags = includeWidgetTags ? List.from(tags ?? []) : [];
 
