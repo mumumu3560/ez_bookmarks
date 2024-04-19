@@ -1,14 +1,22 @@
 
 import 'package:drift/native.dart';
+import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:ez_bookmarks/drift/database_1/database.dart';
 
 import 'package:ez_bookmarks/utils/various.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
-Future<Map<String, List<Tag>>> getTagsByGenre() async {
+Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
     
-    final allTags = await myDatabase.allTags; // 全てのタグを取得
+    
+
+    final dbAd = ref.watch(dbAdminNotifierProvider);
+
+    //final allTags = await myDatabase.allTags; // 全てのタグを取得
+    final allTags = await dbAd.allTags; // 全てのタグを取得
+
     Map<String, List<Tag>> tagsByGenre = {};
 
     for (final tag in allTags) {
@@ -26,8 +34,9 @@ Future<Map<String, List<Tag>>> getTagsByGenre() async {
 
 
 // ブックマークを追加するメソッド（具体的なロジックは省略）
-  void editBookmark(BuildContext context, String contents, String url, List<String> tags, String? imagePath, int bookmarkId) async {
+  void editBookmark(WidgetRef ref,  BuildContext context, String contents, String url, List<String> tags, String? imagePath, int bookmarkId) async {
 
+    final dbAd = ref.watch(dbAdminNotifierProvider);
     try{
       if(url == ""){
         context.showErrorSnackBar(message: "URLを入力してください。");
@@ -35,7 +44,17 @@ Future<Map<String, List<Tag>>> getTagsByGenre() async {
       }
 
 
+      /*
       await myDatabase.updateBookmarkWithTags(
+        bookmarkId,
+        contents, 
+        url, 
+        tags, 
+        imagePath,
+      );
+       */
+
+      await dbAd.updateBookmarkWithTags(
         bookmarkId,
         contents, 
         url, 
@@ -45,8 +64,10 @@ Future<Map<String, List<Tag>>> getTagsByGenre() async {
 
       // ここでタグのジャンルをGenreColorsテーブルに挿入または更新
     for (final tagName in tags) {
-      final tagId = await myDatabase.getTagIdByName(tagName);
-      await myDatabase.insertOrUpdateGenreColor(tagId!, "分類なし", false); // ジャンルは適宜設定または選択させる
+      //final tagId = await myDatabase.getTagIdByName(tagName);
+      final tagId = await dbAd.getTagIdByName(tagName);
+      //await myDatabase.insertOrUpdateGenreColor(tagId!, "分類なし", false); // ジャンルは適宜設定または選択させる
+      await dbAd.insertOrUpdateGenreColor(tagId!, "分類なし", false); // ジャンルは適宜設定または選択させる
     }
       
 
