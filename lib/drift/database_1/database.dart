@@ -169,7 +169,8 @@ class Settings extends Table {
 // 両方のテーブルを含める
 @DriftDatabase(tables: [Bookmarks, Tags, TaggedBookmarks, GenreColors, Settings, Genres])
 class MyDatabase extends _$MyDatabase {
-  MyDatabase() : super(_openConnection("ez_database"));
+  final String dbName;
+  MyDatabase({required this.dbName}) : super(_openConnection("ez_database"));
   @override
   int get schemaVersion => 20;
 
@@ -623,6 +624,10 @@ class MyDatabase extends _$MyDatabase {
 
     for(int i = 0; i < nowBookmarks.length; i++){
       print("index: $i, updatedAt: ${nowBookmarks[i].updatedAt}");
+    }
+
+    if(isDesc == false){
+      nowBookmarks = nowBookmarks.reversed.toList();
     }
 
     return nowBookmarks;
@@ -1175,11 +1180,11 @@ Future<int> getTheme() async {
    */
 
   // 新しいデータベースファイルで現在のデータベースを置き換える
-  Future<void> importDatabase(String newPath) async {
+  Future<void> importDatabase(String newPath, String dbName) async {
 
     await myDatabase.close(); // 最初にデータベース接続を閉じる
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'ez_database.sqlite'));
+    final file = File(p.join(dbFolder.path, '$dbName.sqlite'));
 
     await file.delete();
     await File(newPath).copy(file.path);
