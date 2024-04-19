@@ -1,6 +1,7 @@
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
 import 'package:ez_bookmarks/pages/database_management/components/almost_logic/almost_logic.dart';
 import 'package:ez_bookmarks/pages/database_management/components/almost_view/dialogs.dart';
+import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/db_switcher/db_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:ez_bookmarks/utils/various.dart';
@@ -29,6 +30,7 @@ class _DatabaseManagementPageState extends ConsumerState<DatabaseManagementPage>
 Widget build(BuildContext context) {
 
   final dbSwitcher = ref.watch(dbSwitcherNotifierProvider);
+  final dbAdmin = ref.watch(dbAdminNotifierProvider);
 
   return Scaffold(
     appBar: AppBar(
@@ -63,7 +65,7 @@ Widget build(BuildContext context) {
 
                     onPressed: (){
                       //final dbSwitcherNotifier = ref.read(dbSwitcherNotifierProvider.notifier);
-                      importDatabase(context, dbSwitcher); 
+                      importDatabase(ref,context, dbSwitcher); 
                     } ,
 
                     child: const Text("インポートする")
@@ -87,7 +89,7 @@ Widget build(BuildContext context) {
             
                   ElevatedButton(
                     onPressed: (){
-                      backupDatabase(context, dbSwitcher);
+                      backupDatabase(ref,context, dbSwitcher);
                     }, 
                     child: const Text("バックアップする")
                   ),
