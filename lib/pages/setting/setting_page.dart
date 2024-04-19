@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
 import 'package:ez_bookmarks/env/env.dart';
+import 'package:ez_bookmarks/pages/setting/components/almost_logic/almost_logic.dart';
 import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/db_switcher/db_switcher.dart';
 import 'package:ez_bookmarks/riverpod/theme/theme_switcher.dart';
@@ -48,24 +49,34 @@ class SettingPage extends HookConsumerWidget{
     final isAdLoaded = useState(false);
 
     useEffect(() {
-      InterstitialAd.load(
-        adUnitId: adUnitId,
-        request: const AdRequest(),
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (ad) {
-            interstitialAd.value = ad;
-            isAdLoaded.value = true;
-          },
-          onAdFailedToLoad: (error) {
-            print('広告のロードに失敗しました: $error');
-          },
-        ),
-      );
+  bool isMounted = true;
 
-      return () {
-        interstitialAd.value?.dispose();
-      };
-    }, const []);
+  InterstitialAd.load(
+    adUnitId: adUnitId,
+    request: const AdRequest(),
+    adLoadCallback: InterstitialAdLoadCallback(
+      onAdLoaded: (ad) {
+        if (isMounted) {
+          interstitialAd.value = ad;
+          isAdLoaded.value = true;
+        } else {
+          ad.dispose(); // もしコンポーネントがアンマウントされていたら、ロードされた広告を即座に破棄
+        }
+      },
+      onAdFailedToLoad: (error) {
+        if (isMounted) {
+          print('広告のロードに失敗しました: $error');
+        }
+      },
+    ),
+  );
+
+  return () {
+    isMounted = false; // コンポーネントがアンマウントされたときにフラグをfalseに設定
+    interstitialAd.value?.dispose(); // 広告を破棄
+  };
+}, const []);
+
 
     final nowTheme = ref.watch(themeModeSwitcherNotifierProvider);
 
@@ -184,26 +195,58 @@ class SettingPage extends HookConsumerWidget{
                             },
                           ),
                         ),
-                        onPressed: () async{
+                        onPressed: () async {
 
-                          if (isAdLoaded.value) {
-                            interstitialAd.value!.show();
-                            interstitialAd.value!.fullScreenContentCallback = FullScreenContentCallback(
-                              onAdDismissedFullScreenContent: (InterstitialAd ad) {
-                                ad.dispose();
-                                isAdLoaded.value = false;
-                                // 広告が閉じられた後にデータベース切り替え処理を実行
-                              },
-                            );
+
+
+                          final confirm = await showDialog<bool>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('確認'),
+                                content: const Text('データベースを切り替えますか？'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.of(context).pop(false),
+                                    child: const Text('いいえ'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () => Navigator.of(context).pop(true),
+                                    child: const Text('はい'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ?? false;
+
+                          if(!confirm){
+                            return;
                           }
 
-                          final notifier = ref.read(dbSwitcherNotifierProvider.notifier);
-                          notifier.updateState(entry.value);
 
-                          final dbAdNotifier = ref.read(dbAdminNotifierProvider.notifier);
-                          await dbAdNotifier.closeDB();
-                          await dbAdNotifier.updateDB(entry.value);
+                          if (isAdLoaded.value) {
+                            // 広告がロードされていれば表示
+                            
+                            interstitialAd.value!.fullScreenContentCallback = FullScreenContentCallback(
+                              onAdDismissedFullScreenContent: (InterstitialAd ad) async{
 
+                                ad.dispose();
+                                isAdLoaded.value = false;
+
+                                if(context.mounted){
+                                  context.showSuccessSnackBar(message: "データベースを切り替えました");
+
+                                }
+
+
+                              },
+                            );
+                            await interstitialAd.value!.show();
+                            await performDatabaseSwitch(entry.value, ref);
+                          } else {
+                            // 広告がロードされていない場合は直接データベース切り替え
+                            performDatabaseSwitch(entry.value, ref);
+                          }
                         },
                         child: Text(dbNameMap[entry.value]!),
                       );
