@@ -2,6 +2,7 @@ import 'package:ez_bookmarks/drift/database_1/database.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/almost_logic/almost_logic.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/dialogs.dart';
 import 'package:ez_bookmarks/pages/edit_bookmark/edit_bookmark_page.dart';
+import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/desc_or_asc/desc_or_asc_switcher.dart';
 import 'package:ez_bookmarks/riverpod/sort_bookmarks/sort_kind_switcher.dart';
 import 'package:ez_bookmarks/utils/various.dart';
@@ -32,6 +33,9 @@ class _BookmarkCardState extends ConsumerState<BookmarkCard> with AutomaticKeepA
   
   @override
   Widget build(BuildContext context) {
+
+    final dbAd = ref.watch(dbAdminNotifierProvider);
+    
     super.build(context);
 
     return SizedBox(
@@ -39,8 +43,15 @@ class _BookmarkCardState extends ConsumerState<BookmarkCard> with AutomaticKeepA
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: () async {
-            await myDatabase.incrementWatchNum(widget.bookmark.id);
-            await myDatabase.updateUpdatedAtBookmark(widget.bookmark, DateTime.now());
+            //await myDatabase.incrementWatchNum(widget.bookmark.id);
+            await dbAd.incrementWatchNum(widget.bookmark.id);
+            //await myDatabase.updateUpdatedAtBookmark(widget.bookmark, DateTime.now());
+            await dbAd.updateUpdatedAtBookmark(widget.bookmark, DateTime.now());
+
+
+
+
+
             if (await canLaunchUrl(Uri.parse(widget.bookmark.urlText))) {
               await launchUrl(Uri.parse(widget.bookmark.urlText));
             }
@@ -90,6 +101,22 @@ class _BookmarkCardState extends ConsumerState<BookmarkCard> with AutomaticKeepA
     );
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   void _showPopupMenu(BuildContext context, TapDownDetails details) {
     final position = details.globalPosition;
     final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
@@ -124,9 +151,9 @@ class _BookmarkCardState extends ConsumerState<BookmarkCard> with AutomaticKeepA
                 onTap: () async {
                   Navigator.of(context).pop();
                                         
-                  Map<int,List<int>> sums = await calcSums(context, widget.bookmark, widget.tags, sortKind, descOrAsc);
+                  Map<int,List<int>> sums = await calcSums(ref, context, widget.bookmark, widget.tags, sortKind, descOrAsc);
                   if(context.mounted){
-                    showBookmarkTagsDialog(context, widget.bookmark, sums[0]!, sums[1]!, widget.tags);
+                    showBookmarkTagsDialog(ref, context, widget.bookmark, sums[0]!, sums[1]!, widget.tags);
                   }
 
                 },
@@ -159,7 +186,9 @@ class _BookmarkCardState extends ConsumerState<BookmarkCard> with AutomaticKeepA
               showConfirmDialog(
                 context, 
                   () async {
-                  await myDatabase.deleteBookmark(widget.bookmark);
+                  //await myDatabase.deleteBookmark(widget.bookmark);
+                  final dbAd = ref.watch(dbAdminNotifierProvider);
+                  await dbAd.deleteBookmark(widget.bookmark);
                               
                   if(context.mounted){
                     Navigator.pop(context);
