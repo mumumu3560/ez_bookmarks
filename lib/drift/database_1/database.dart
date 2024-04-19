@@ -105,7 +105,8 @@ class Genres extends Table {
 
 //テーブルの設定を保存しておく
 class Settings extends Table {
-  IntColumn get id => integer().clientDefault(() => 0 ) ();
+  IntColumn get id => integer().unique().clientDefault(() => 0 ) ();
+  //IntColumn get id => integer().autoIncrement()();
   IntColumn get themeMode => integer().nullable()();
   TextColumn get databaseName => text().clientDefault(() => "データベース1")();
 
@@ -170,9 +171,9 @@ class Settings extends Table {
 @DriftDatabase(tables: [Bookmarks, Tags, TaggedBookmarks, GenreColors, Settings, Genres])
 class MyDatabase extends _$MyDatabase {
   final String dbName;
-  MyDatabase({required this.dbName}) : super(_openConnection("ez_database"));
+  MyDatabase({required this.dbName}) : super(_openConnection(dbName));
   @override
-  int get schemaVersion => 20;
+  int get schemaVersion => 23;
 
 
   @override
@@ -304,6 +305,21 @@ class MyDatabase extends _$MyDatabase {
       if(from < 20){
         await m.deleteTable(genres.actualTableName);
         await m.createTable(genres);
+      }
+
+      if(from < 21){
+        await m.deleteTable(settings.actualTableName);
+        await m.createTable(settings);
+      }
+      
+      if(from < 22){
+        await m.deleteTable(settings.actualTableName);
+        await m.createTable(settings);
+      }
+
+      if(from < 23){
+        await m.deleteTable(settings.actualTableName);
+        await m.createTable(settings);
       }
 
      },
@@ -986,32 +1002,18 @@ Future<List<Genre>> allGenres() async {
     }
   }
 
-  /*
-  Future<int> getTheme() async {
-  try {
-    // settingsテーブルからIDが0のレコードを取得
-    final themeMode = await (select(settings)..where((s) => s.id.equals(0))).getSingle();
-    // themeModeがnullではない場合、その値を返す
-    return themeMode.themeMode ?? 0;
-  } catch (e) {
-    // テーブルが空か、レコードが見つからない場合に-1を返す
-    print('Error: $e');
-    myDatabase.insertTheme();
-    return 1;
-  }
-}
-   */
 
-Future<int> getTheme() async {
+Future<int?> getTheme() async {
   try {
     // settingsテーブルからIDが0のレコードを取得
     final themeMode = await (select(settings)..where((s) => s.id.equals(0))).getSingleOrNull();
     // themeModeがnullの場合、デフォルト値として1を返す
     if (themeMode == null) {
-      print("設定が見つかりません。デフォルトを使用します。");
-      myDatabase.insertTheme(); // デフォルトのテーマをデータベースに挿入
-      return 1;
+
+      
+      return null;
     }
+    print("ここはテーマがnullではない");
     // themeModeがnullではない場合、その値を返す
     return themeMode.themeMode ?? 1; // themeModeがnullでなければその値、そうでなければ1を返す
   } catch (e) {
@@ -1032,26 +1034,6 @@ Future<int> getTheme() async {
   }
 
 
-  /*
-  //axisCountを取得
-  Future<int> getAxisCount() async {
-    try {
-      // settingsテーブルからIDが0のレコードを取得
-      final axisCount = await (select(settings)..where((s) => s.id.equals(0))).getSingle();
-      print(axisCount);
-      //MediaQuery.of(context).size.width > 600 ? 4 : 2;
-      //return axisCount.axisCount ?? 2;
-      return SizeConfig.screenWidth! > 600 
-        ? axisCount.axisCount ?? 4 
-        : axisCount.axisCount ?? 2;
-    } catch (e) {
-      // テーブルが空か、レコードが見つからない場合に-1を返す
-      return SizeConfig.screenWidth! > 600 
-        ? 4 
-        : 2;
-    }
-  }
-   */
 
 
   Future<int> getAxisCount() async {
@@ -1107,27 +1089,6 @@ Future<int> getTheme() async {
 }
 
 
-  /*
-  
-  //AspectRatioを取得
-  Future<double> getAspectRatio() async {
-    try {
-      // settingsテーブルからIDが0のレコードを取得
-      final aspectRatio = await (select(settings)..where((s) => s.id.equals(0))).getSingle();
-      print(aspectRatio);
-      //return aspectRatio.aspectRatio ?? 0.4;
-      return SizeConfig.screenWidth! > 600 
-        ? aspectRatio.aspectRatio ?? 0.75 
-        : aspectRatio.aspectRatio ?? 0.4;
-
-    } catch (e) {
-      // テーブルが空か、レコードが見つからない場合に-1を返す
-      return SizeConfig.screenWidth! > 600 
-        ? 0.75 
-        : 0.4;
-    }
-  }
-   */
 
   //AspectRatioを更新
   Future<int> updateAspectRatio(double aspectRatio) async{
@@ -1149,49 +1110,20 @@ Future<int> getTheme() async {
 
 
   Future<void> backupDatabase(String newPath) async {
-  final File file = File(newPath);
+    final File file = File(newPath);
 
-  print(file.path);
-  print(file);
+    await file.parent.create(recursive: true);
 
-  print("ここでいろいろ確認する");
+    if (await file.exists()) {
+      await file.delete();
+    }
 
-  // ディレクトリが存在することを確認
-  await file.parent.create(recursive: true);
+    // データベースを新しいファイルにエクスポート
+    await customStatement('VACUUM INTO ?', [file.path]);
+  }
 
-  /*
-  // ファイルが既に存在する場合は削除
+
   
-   */
-
-  if (await file.exists()) {
-    await file.delete();
-  }
-
-  // データベースを新しいファイルにエクスポート
-  await customStatement('VACUUM INTO ?', [file.path]);
-}
-
-
-  /*
-  // データベースを新しいファイルにバックアップする
-  Future<void> backupDatabase(String newPath) async {
-    await customStatement('VACUUM INTO ?', [newPath]);
-
-  }
-   */
-
-  // 新しいデータベースファイルで現在のデータベースを置き換える
-  Future<void> importDatabase(String newPath, String dbName) async {
-
-    await myDatabase.close(); // 最初にデータベース接続を閉じる
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, '$dbName.sqlite'));
-
-    await file.delete();
-    await File(newPath).copy(file.path);
-    // データベースの再接続や初期化が必要な場合はここで実行
-  }
 
 
 

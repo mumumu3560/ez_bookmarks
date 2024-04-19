@@ -1092,6 +1092,7 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
       'id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
       clientDefault: () => 0);
   static const VerificationMeta _themeModeMeta =
       const VerificationMeta('themeMode');
