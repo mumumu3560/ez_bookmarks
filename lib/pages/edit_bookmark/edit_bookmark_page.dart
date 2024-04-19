@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:ez_bookmarks/drift/database_1/database.dart';
 
 import 'package:ez_bookmarks/utils/various.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-class EditBookmarkPage extends StatefulWidget {
+class EditBookmarkPage extends ConsumerStatefulWidget {
   const EditBookmarkPage({
     super.key,
     required this.bookmark,
@@ -22,7 +23,7 @@ class EditBookmarkPage extends StatefulWidget {
   _EditBookmarkPageState createState() => _EditBookmarkPageState();
 }
 
-class _EditBookmarkPageState extends State<EditBookmarkPage> {
+class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
 
   final TextEditingController _contentsController = TextEditingController();
   final TextEditingController _urlController = TextEditingController();
@@ -48,7 +49,7 @@ class _EditBookmarkPageState extends State<EditBookmarkPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tagsByGenre = getTagsByGenre();
+    //_tagsByGenre = getTagsByGenre(ref);
     setState(() {
       _contentsController.text = widget.bookmark.content;
       _urlController.text = widget.bookmark.urlText;
@@ -120,6 +121,7 @@ class _EditBookmarkPageState extends State<EditBookmarkPage> {
           ElevatedButton(
             onPressed: (){
               editBookmark(
+                ref,
                 context,
                 _contentsController.text,
                 _urlController.text,
@@ -259,7 +261,7 @@ class _EditBookmarkPageState extends State<EditBookmarkPage> {
                     const Text("すでに存在するタグ一覧"),
               
                     FutureBuilder<Map<String, List<Tag>>>(
-                      future: _tagsByGenre,
+                      future: getTagsByGenre(ref),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return const Center(child: CircularProgressIndicator());
