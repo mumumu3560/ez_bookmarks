@@ -36,7 +36,9 @@ class SettingPage extends ConsumerWidget{
     final nowTheme = ref.watch(themeModeSwitcherNotifierProvider);
 
     final dbName = ref.watch(dbSwitcherNotifierProvider);
-    final myDatabase = ref.watch(dbAdminNotifierProvider.notifier);
+    //final myDatabase = ref.watch(dbAdminNotifierProvider.notifier);
+
+    final dbAdmin = ref.watch(dbAdminNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -84,9 +86,36 @@ class SettingPage extends ConsumerWidget{
                       nowTheme.when(
                         data: (data) => IconButton(
                           onPressed: () async{
+                            //final themeNotifier = ref.read(themeModeSwitcherNotifierProvider.notifier);
+                            //themeNotifier.updateState(data == 0 ? 1 : 0);
+                            //await themeNotifier.updateState(data == 0 ? 1 : 0);
+
+                            int? thisTheme = await dbAdmin.getTheme();
                             final themeNotifier = ref.read(themeModeSwitcherNotifierProvider.notifier);
-                            //ref.read(themeModeSwitcherNotifierProvider.notifier).updateState(data == 0 ? 1 : 0);
-                            await themeNotifier.updateState(data == 0 ? 1 : 0);
+                            print("げんざいのてーああああああああああああああああああああああああ: $thisTheme");
+                    
+                            if (thisTheme == 0) {
+                              await themeNotifier.updateState(1);
+                              //myDatabase.updateTheme(1);
+                              await dbAdmin.updateTheme(1);
+
+                            } else if(thisTheme == 1){
+                              await themeNotifier.updateState(0);
+                              //myDatabase.updateTheme(0);
+                              await dbAdmin.updateTheme(0);
+                            }
+                            else{
+                              await dbAdmin.insertTheme();
+
+                              await themeNotifier.updateState(1);
+                              //myDatabase.updateTheme(0);
+                              await dbAdmin.updateTheme(1);
+                            }
+
+
+                            
+
+
                           }, 
                           icon: data == 0 ? const Icon(Icons.light_mode) : const Icon(Icons.dark_mode),
                         ),
@@ -97,17 +126,32 @@ class SettingPage extends ConsumerWidget{
                   ),
                   onTap: () async {
             
-                    int thisTheme = await myDatabase.getTheme();
+                    int? thisTheme = await dbAdmin.getTheme();
                     final themeNotifier = ref.read(themeModeSwitcherNotifierProvider.notifier);
-            
+                    print("げんざいのてーああああああああああああああああああああああああ: $thisTheme");
             
                     if (thisTheme == 0) {
                       themeNotifier.updateState(1);
-                      myDatabase.updateTheme(1);
-                    } else {
+                      //myDatabase.updateTheme(1);
+                      dbAdmin.updateTheme(1);
+
+                    } else if(thisTheme == 1){
                       themeNotifier.updateState(0);
-                      myDatabase.updateTheme(0);
+                      //myDatabase.updateTheme(0);
+                      dbAdmin.updateTheme(0);
                     }
+                    else{
+                      dbAdmin.insertTheme();
+                      themeNotifier.updateState(1);
+                      //myDatabase.updateTheme(0);
+                      dbAdmin.updateTheme(1);
+                    }
+
+
+
+
+
+
                   },
                 ),
             
@@ -128,6 +172,16 @@ class SettingPage extends ConsumerWidget{
                         onPressed: () async{
                           final notifier = ref.read(dbSwitcherNotifierProvider.notifier);
                           notifier.updateState(entry.value);
+
+                          final dbAdNotifier = ref.read(dbAdminNotifierProvider.notifier);
+                          await dbAdNotifier.closeDB();
+                          await dbAdNotifier.updateDB(entry.value);
+                          print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                          print("こんにちはここでDBを変更します。");
+                          print("現在のデータベース: $dbName");
+                          print("変更後のデータベース: ${entry.value}");
+
+                          print(dbAdNotifier);
 
                         },
                         child: Text(entry.value),
