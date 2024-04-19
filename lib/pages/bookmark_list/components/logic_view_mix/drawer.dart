@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:ez_bookmarks/pages/database_management/database_management_page.dart';
 import 'package:ez_bookmarks/pages/search/search_page.dart';
 import 'package:ez_bookmarks/pages/setting/setting_page.dart';
+import 'package:ez_bookmarks/riverpod/db_switcher/db_switcher.dart';
 import 'package:ez_bookmarks/riverpod/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,18 +19,19 @@ class CustomDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final nowTheme = ref.watch(themeModeSwitcherNotifierProvider);
+    final dbName = ref.watch(dbSwitcherNotifierProvider);
 
     return Drawer(
       child: ListView(
         children: [
-          const SizedBox(
+          SizedBox(
             child: DrawerHeader(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ListTile(
                     subtitle: Text('Bookmarks with Tags'),
-                    title: Text("データベース1"),
+                    title: Text(dbName),
                   ),
                 ],
               )
