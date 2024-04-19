@@ -2,6 +2,7 @@ import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/bookmark_list_page.dart';
 import 'package:ez_bookmarks/pages/search/components/almost_logic/almost_logic.dart';
 import 'package:ez_bookmarks/pages/search/components/almost_view/dialogs.dart';
+import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/desc_or_asc/desc_or_asc_switcher.dart';
 import 'package:ez_bookmarks/riverpod/sort_bookmarks/sort_kind_switcher.dart';
 import 'package:ez_bookmarks/utils/various.dart';
@@ -29,45 +30,31 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   Future<void> initFetch() async{
     
     genreColors = await getGenreColors();
-    _genresFuture = await myDatabase.allGenres(); // ジャンルを取得
+    //_genresFuture = await myDatabase.allGenres(); // ジャンルを取得
+    _genresFuture = await getAllGenres();
     
   }
 
 
-  @override
-  void initState() {
-    super.initState();
-    _tagsByGenre = getTagsByGenre();
-    initFetch();
-  }
-/*
 
-  void showSearchHelpDialog(BuildContext context ){
-    showDialog(
-      context: context, 
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("検索の使い方"),
-          content: Text("a"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              }, 
-              child: const Text("閉じる"),
-            ),
-          ],
-        );
-      },
+  
+Future<List<Genre>> getAllGenres () async{
+  return ref.read(dbAdminNotifierProvider).allGenres();
+}
+
+Future<void> _onSearch(List<Tag> tags) async{
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => BookMarkList(tags: tags),
+      ),
     );
-
   }
- */
 
 
   //全てのジャンルを取得
   Future<List<GenreColor>> getGenreColors() async {
-    return myDatabase.allGenreColors();
+    //return myDatabase.allGenreColors();
+    return ref.read(dbAdminNotifierProvider).allGenreColors();
   }
 
   //このダイアログでは、genreColorsからジャンルを選択して、そのジャンルに属するタグのジャンルを変更することもできる。
@@ -118,14 +105,15 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               onPressed: () async{
                 // タグのジャンルを変更する処理
                 for(int i = 0; i < selectedTags.length; i++){
-                  await _changeTagGenre(selectedTags[i].id, _genreController.text);
+                  await changeTagGenre(ref, selectedTags[i].id, _genreController.text);
                 }
 
-                _genresFuture = await myDatabase.allGenres();
+                //_genresFuture = await myDatabase.allGenres();
+                _genresFuture = await getAllGenres();
 
                 setState(() {
                   selectedTags.clear();
-                  _tagsByGenre = getTagsByGenre();
+                  _tagsByGenre = getTagsByGenre(ref);
                   _genresFuture = _genresFuture;
                   
                 });
@@ -144,35 +132,43 @@ class _SearchPageState extends ConsumerState<SearchPage> {
     );
   }
 
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    //_tagsByGenre = getTagsByGenre();
+    initFetch();
+  }
+/*
+
+  void showSearchHelpDialog(BuildContext context ){
+    showDialog(
+      context: context, 
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("検索の使い方"),
+          content: Text("a"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              }, 
+              child: const Text("閉じる"),
+            ),
+          ],
+        );
+      },
+    );
+
+  }
+ */
+
   
 
-  Future<void> _changeTagGenre(int tagId, String newGenre) async {
-    // ジャンルがGenresテーブルに存在するか確認
-  final existingGenre = await myDatabase.genreExists(newGenre);
-
-  // 存在しない場合、新しいジャンルを追加
-  if (!existingGenre) {
-    await myDatabase.insertGenre(newGenre);
-  }
-
-    await myDatabase.updateTagGenre(tagId, newGenre);
-    await myDatabase.insertOrUpdateGenreColor(tagId, newGenre, false);
-    
-  }
 
 
-  Future<void> _onSearch(List<Tag> tags) async{
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => BookMarkList(tags: tags),
-      ),
-    );
-  }
-
-  Future<int> _calcContainBookmarks(List<Tag> tags, String sortBy, bool isDesc) async{
-    final filterdList = await myDatabase.findBookmarksContainingAllTags(tags, sortBy, isDesc);
-    return filterdList.length;
-  }
 
   int containNum = 0;
 
@@ -229,7 +225,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                         setState(() {
                           selectedTags.remove(tag);
                         });
-                        containNum = await _calcContainBookmarks(selectedTags, sortKind, descOrAsc);
+                        containNum = await calcContainBookmarks(ref, selectedTags, sortKind, descOrAsc);
                         setState(() {
                           containNum = containNum;
                         });
@@ -279,9 +275,12 @@ class _SearchPageState extends ConsumerState<SearchPage> {
 
                       ElevatedButton(
                         onPressed: () async{
+                          selectedTags.isNotEmpty ? showEditDialog(selectedTags) : null;
+                          /*
                           setState(() {
-                            selectedTags.isNotEmpty ? showEditDialog(selectedTags) : null;
+                            
                           });
+                           */
                         },
                         //icon: Icon(Icons.clear),
                         child: const Text("ジャンル変更"),
@@ -292,7 +291,8 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                   SizedBox(height: SizeConfig.blockSizeVertical! * 2,),
                   
                   FutureBuilder<Map<String, List<Tag>>>(
-                    future: _tagsByGenre,
+                    //future: _tagsByGenre,
+                    future: getTagsByGenre(ref),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -334,7 +334,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                                               selectedTags.add(tag);
                                               
                                             });
-                                            containNum = await _calcContainBookmarks(selectedTags, sortKind, descOrAsc);
+                                            containNum = await calcContainBookmarks(ref, selectedTags, sortKind, descOrAsc);
                   
                                             setState(() {
                                               containNum = containNum;
