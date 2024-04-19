@@ -1,5 +1,6 @@
 import 'package:ez_bookmarks/drift/database_1/database.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/bookmark_list_page.dart';
+import 'package:ez_bookmarks/riverpod/aspect/aspect_switcher.dart';
 import 'package:ez_bookmarks/riverpod/axis_count/axis_count_switcher.dart';
 import 'package:ez_bookmarks/riverpod/sort_bookmarks/sort_kind_switcher.dart';
 import 'package:ez_bookmarks/utils/various.dart';
@@ -386,15 +387,15 @@ Future<void> showSettingGridAndAspectDialog(BuildContext context) async{
 
   //グリッドに対するアスペクト比は固定にする。
   Map<int, double> aspectRatiosForWide = {
-    3: 0.5,
-    4: 0.4,
-    5: 0.3,
+    3: 0.7,
+    4: 0.6,
+    5: 0.5,
   };
 
   Map<int, double> aspectRatiosForNarrow = {
-    1: 0.6,
-    2: 0.4,
-    3: 0.3,
+    1: 1.0,
+    2: 0.6,
+    3: 0.5,
   };
   
   showDialog(
@@ -452,6 +453,9 @@ Future<void> showSettingGridAndAspectDialog(BuildContext context) async{
                         label: '$crossAxisCount列',
                         onChanged: (double value) {
                           ref.read(axisCountSwitcherNotifierProvider.notifier).updateState(value.toInt());
+                          ref.read(aspectSwitcherNotifierProvider.notifier).updateState(
+                            isWide ? aspectRatiosForWide[value.toInt()]! : aspectRatiosForNarrow[value.toInt()]!,
+                          );
                         },
                       );
                     },
