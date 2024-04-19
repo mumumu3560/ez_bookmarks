@@ -6,16 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:ez_bookmarks/drift/database_1/database.dart';
 
 import 'package:ez_bookmarks/utils/various.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddBookmarkPage extends StatefulWidget {
+class AddBookmarkPage extends ConsumerStatefulWidget {
   const AddBookmarkPage({super.key});
 
   @override
   _AddBookmarkPageState createState() => _AddBookmarkPageState();
 }
 
-class _AddBookmarkPageState extends State<AddBookmarkPage> {
+class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
 
   final TextEditingController _contentsController = TextEditingController();
   final TextEditingController _urlController = TextEditingController();
@@ -45,7 +46,7 @@ class _AddBookmarkPageState extends State<AddBookmarkPage> {
   @override
   void initState() {
     // TODO: implement initState
-    _tagsByGenre = getTagsByGenre();
+    //_tagsByGenre = getTagsByGenre(ref);
   }
   
   @override
@@ -105,7 +106,7 @@ class _AddBookmarkPageState extends State<AddBookmarkPage> {
         actions: [
           ElevatedButton(
               onPressed: (){
-                addBookmark(context, _contentsController.text, _urlController.text, tags, imagePath);
+                addBookmark(ref, context, _contentsController.text, _urlController.text, tags, imagePath);
               },
               child: const Text('完了'),
             ),
@@ -225,7 +226,7 @@ class _AddBookmarkPageState extends State<AddBookmarkPage> {
                           
                     
                     FutureBuilder<Map<String, List<Tag>>>(
-                      future: _tagsByGenre,
+                      future: getTagsByGenre(ref),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return const Center(child: CircularProgressIndicator());
