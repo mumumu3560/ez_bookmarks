@@ -30,14 +30,13 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   Future<void> initFetch() async{
     
     genreColors = await getGenreColors();
-    //_genresFuture = await myDatabase.allGenres(); // ジャンルを取得
     _genresFuture = await getAllGenres();
     
   }
 
 
 
-  
+
 Future<List<Genre>> getAllGenres () async{
   return ref.read(dbAdminNotifierProvider).allGenres();
 }
@@ -141,31 +140,6 @@ Future<void> _onSearch(List<Tag> tags) async{
     //_tagsByGenre = getTagsByGenre();
     initFetch();
   }
-/*
-
-  void showSearchHelpDialog(BuildContext context ){
-    showDialog(
-      context: context, 
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("検索の使い方"),
-          content: Text("a"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              }, 
-              child: const Text("閉じる"),
-            ),
-          ],
-        );
-      },
-    );
-
-  }
- */
-
-  
 
 
 
