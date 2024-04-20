@@ -124,6 +124,7 @@ class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
                 ref,
                 context,
                 _contentsController.text,
+                widget.bookmark.urlText,
                 _urlController.text,
                 tags,
                 imagePath,
@@ -226,12 +227,6 @@ class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
                           onPressed: _addTag,
                         ),
               
-                        /*
-                        suffix: ElevatedButton(
-                          onPressed: _addTag,
-                          child: Text('追加'),
-                        ),
-                         */
                         
                       ),
                     ),

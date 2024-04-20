@@ -34,7 +34,7 @@ Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
 
 
 // ブックマークを追加するメソッド（具体的なロジックは省略）
-  void editBookmark(WidgetRef ref,  BuildContext context, String contents, String url, List<String> tags, String? imagePath, int bookmarkId) async {
+  void editBookmark(WidgetRef ref,  BuildContext context, String contents, String existedUrl,String url, List<String> tags, String? imagePath, int bookmarkId) async {
 
     final dbAd = ref.watch(dbAdminNotifierProvider);
     try{
@@ -44,15 +44,15 @@ Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
       }
 
 
-      /*
-      await myDatabase.updateBookmarkWithTags(
-        bookmarkId,
-        contents, 
-        url, 
-        tags, 
-        imagePath,
-      );
-       */
+      final bool isExistUrl = await ref.watch(dbAdminNotifierProvider).checkBookmarkWithUrl(url);
+
+      if(isExistUrl && existedUrl != url){
+        if(context.mounted){
+          context.showErrorSnackBar(message: "同じURLのブックマークが既に存在します。");
+        }
+        return;
+      }
+
 
       await dbAd.updateBookmarkWithTags(
         bookmarkId,
