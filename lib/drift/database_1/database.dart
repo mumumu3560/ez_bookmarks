@@ -377,6 +377,15 @@ class MyDatabase extends _$MyDatabase {
   //ブックマークインサート
   //TODO ここからブックマーク
 
+  Future<bool> checkBookmarkWithUrl(String url) async{
+    final existingBookmark = await (select(bookmarks)..where((b) => b.urlText.equals(url))).getSingleOrNull();
+    if(existingBookmark == null){
+      return false;
+    }else{
+      return true;
+    }
+  }
+
   Future<void> insertBookmarkWithTags(String content, String url, List<String> tagNames, String? imagePath) async {
     // ブックマークを挿入し、挿入されたブックマークのIDを取得
     final bookmarkId = await into(bookmarks).insert(BookmarksCompanion(
@@ -632,16 +641,6 @@ class MyDatabase extends _$MyDatabase {
       nowBookmarks.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
     }
     
-    //全てのブックマークのindexとcreatedAtをprintする
-    /*
-    for(int i = 0; i < nowBookmarks.length; i++){
-      print("index: $i, createdAt: ${nowBookmarks[i].createdAt}");
-    }
-
-    for(int i = 0; i < nowBookmarks.length; i++){
-      print("index: $i, updatedAt: ${nowBookmarks[i].updatedAt}");
-    }
-     */
     
 
     if(isDesc == false){
@@ -1013,12 +1012,9 @@ Future<int?> getTheme() async {
       
       return null;
     }
-    print("ここはテーマがnullではない");
     // themeModeがnullではない場合、その値を返す
     return themeMode.themeMode ?? 1; // themeModeがnullでなければその値、そうでなければ1を返す
   } catch (e) {
-    // 予期しないエラーが発生した場合に-1を返す
-    print('Error: $e');
     return 0;
   }
 }
@@ -1048,7 +1044,6 @@ Future<int?> getTheme() async {
       : axisCount.axisCount ?? 2;
   } catch (e) {
     // 予期しないエラーが発生した場合
-    print('Error: $e');
     return SizeConfig.screenWidth! > 600 ? 4 : 2;
   }
 }
@@ -1083,7 +1078,6 @@ Future<int?> getTheme() async {
       : aspectRatio.aspectRatio ?? 0.4;
   } catch (e) {
     // 予期しないエラーが発生した場合
-    print('Error: $e');
     return SizeConfig.screenWidth! > 600 ? 0.75 : 0.4;
   }
 }
