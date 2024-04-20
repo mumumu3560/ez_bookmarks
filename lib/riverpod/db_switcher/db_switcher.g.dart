@@ -7,7 +7,7 @@ part of 'db_switcher.dart';
 // **************************************************************************
 
 String _$dbSwitcherNotifierHash() =>
-    r'2c93756b9b5f4e7a0a0b650107cc836169b058cd';
+    r'85019affd5905a30de64fd62b751d9e583e6a1c4';
 
 /// See also [DbSwitcherNotifier].
 @ProviderFor(DbSwitcherNotifier)

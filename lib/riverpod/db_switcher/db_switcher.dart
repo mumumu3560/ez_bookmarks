@@ -15,9 +15,7 @@ class DbSwitcherNotifier extends _$DbSwitcherNotifier{
   //ここでdb変更。
   //ez_database、ez_database_1、ez_database_2のいずれかを引数に取る。
   void updateState(String db) {
-    print("変更前のstate: $state");
     state = db;
-    print("変更後のstate: $state");
   }
 
 
