@@ -19,30 +19,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class SettingPage extends ConsumerStatefulWidget {
-  const SettingPage({Key? key}) : super(key: key);
-
-  @override
-  _SettingPageState createState() => _SettingPageState();
-}
-
-class _SettingPageState extends ConsumerState<SettingPage> {
+class SettingPage extends ConsumerWidget {
+  const SettingPage({super.key});
 
   static Map<int,String> dbMap = {
     0: "ez_database",
@@ -61,50 +39,13 @@ class _SettingPageState extends ConsumerState<SettingPage> {
     "ez_database_1": 1,
     "ez_database_2": 2,
   };
-  
-  
-
-  InterstitialAd? _interstitialAd;
-  bool _isLoading = true;  // 広告のロード状態を管理するフラグ
 
   static final String adUnitId = Env.i1;
 
-  @override
-  void initState() {
-    super.initState();
-    //_loadInterstitialAd();
-  }
-
-  /*
-  void _loadInterstitialAd() {
-    InterstitialAd.load(
-      adUnitId: adUnitId,
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (InterstitialAd ad) {
-          setState(() {
-            _interstitialAd = ad;
-            _isLoading = false;  // ロード完了
-          });
-        },
-        onAdFailedToLoad: (LoadAdError error) {
-          setState(() {
-            _isLoading = false;  // ロード失敗
-          });
-        },
-      ),
-    );
-  }
-   */
+  
 
   @override
-  void dispose() {
-   // _interstitialAd?.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context, WidgetRef ref){
 
     final interstitial = ref.watch(interstitialAdNotifierProvider);
 
@@ -113,8 +54,6 @@ class _SettingPageState extends ConsumerState<SettingPage> {
     final dbName = ref.watch(dbSwitcherNotifierProvider);
 
     final interstitialCount = ref.watch(interstitialCountNotifierProvider); 
-    //final myDatabase = ref.watch(dbAdminNotifierProvider.notifier);
-
     final dbAdmin = ref.watch(dbAdminNotifierProvider);
 
 
@@ -260,18 +199,6 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                               showLoadingDialog(context, 'データベースを切り替えています');
                             }
 
-                            /*
-                            if(_interstitialAd == null){
-                              if(context.mounted){
-                                Navigator.of(context).pop();
-                              }
-                              return;
-                            }
-                                        
-                            // TODO admob本番
-                            _interstitialAd!.show();
-                            _interstitialAd = null;
-                             */
 
                             if(interstitialCount % 3 == 0){
                               final interstitialAdNotifier = ref.read(interstitialAdNotifierProvider.notifier);
@@ -279,8 +206,6 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                               
                             }
 
-                            print("interstitialCount: $interstitialCount");
-                            print("ここが呼ばれたinterstitialCount");
 
                             final interstitialCountNotifier = ref.read(interstitialCountNotifierProvider.notifier);
                             interstitialCountNotifier.updateState();
@@ -294,7 +219,6 @@ class _SettingPageState extends ConsumerState<SettingPage> {
 
                             if(context.mounted){
                               Navigator.of(context).pop();
-                              //bookmark_listページに飛ぶ。
 
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(

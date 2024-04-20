@@ -1,36 +1,21 @@
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
 import 'package:ez_bookmarks/pages/database_management/components/almost_logic/almost_logic.dart';
 import 'package:ez_bookmarks/pages/database_management/components/almost_view/dialogs.dart';
-import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/db_switcher/db_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:ez_bookmarks/utils/various.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
-class DatabaseManagementPage extends ConsumerStatefulWidget {
+
+class DatabaseManagementPage extends ConsumerWidget {
   const DatabaseManagementPage({super.key});
-
-  @override
-  _DatabaseManagementPageState createState() => _DatabaseManagementPageState();
-}
-
-class _DatabaseManagementPageState extends ConsumerState<DatabaseManagementPage> {
-  //late MyDatabase db;
-
-  @override
-  void initState() {
-    super.initState();
-    //db = myDatabase;
-  }
-
   
 
  @override
-Widget build(BuildContext context) {
+Widget build(BuildContext context, WidgetRef ref) {
 
   final dbSwitcher = ref.watch(dbSwitcherNotifierProvider);
-  final dbAdmin = ref.watch(dbAdminNotifierProvider);
 
   return Scaffold(
     appBar: AppBar(
@@ -64,7 +49,7 @@ Widget build(BuildContext context) {
                   ElevatedButton(                    
 
                     onPressed: (){
-                      //final dbSwitcherNotifier = ref.read(dbSwitcherNotifierProvider.notifier);
+                      
                       importDatabase(ref,context, dbSwitcher); 
                     } ,
 
