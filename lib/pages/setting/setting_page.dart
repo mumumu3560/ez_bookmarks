@@ -66,7 +66,7 @@ class SettingPage extends ConsumerWidget {
       body: Column(
         children: [
           Expanded(
-            child: (interstitial == null)
+            child: (interstitial == null && interstitialCount % 3 == 0)
               ? const Center(child: CircularProgressIndicator())
               : Column(
               children: [
