@@ -105,8 +105,32 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
         title: const Text('追加'),
         actions: [
           ElevatedButton(
-              onPressed: (){
-                addBookmark(ref, context, _contentsController.text, _urlController.text, tags, imagePath);
+              onPressed: () async{
+                await addBookmark(ref, context, _contentsController.text, _urlController.text, tags, imagePath);
+                if(_urlController.text.isEmpty) return;
+                
+                if(context.mounted){
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("完了"),
+                        content: const Text("ブックマークが追加されました。\n リロードしてください。。"),
+                        actions: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            },
+                            child: const Text("閉じる"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+                
+              
               },
               child: const Text('完了'),
             ),
@@ -196,13 +220,6 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
                           onPressed: _addTag,
                         ),
                           
-                        /*
-                        suffix: ElevatedButton(
-                          onPressed: _addTag,
-                          child: Text('追加'),
-                        ),
-                         */
-                        
                       ),
                     ),
                           
