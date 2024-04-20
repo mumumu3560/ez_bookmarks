@@ -1,10 +1,13 @@
+
 import 'package:ez_bookmarks/env/env.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'interstitial_ad_notifier.g.dart'; // 自動生成ファイル
 
-@riverpod
+
+//ここでkeepAliveを設定しないと、watchしていない状態でdisposeされてしまう
+@Riverpod(keepAlive: true)
 class InterstitialAdNotifier extends _$InterstitialAdNotifier {
 
   final adUnitId = Env.i1;
@@ -45,6 +48,8 @@ class InterstitialAdNotifier extends _$InterstitialAdNotifier {
   void _setCallbacks(InterstitialAd ad) {
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: (InterstitialAd ad) {
+
+        
 
         ad.dispose();
         state = null; // 広告を表示後にnullに設定
