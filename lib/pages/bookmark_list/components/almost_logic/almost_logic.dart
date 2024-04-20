@@ -109,8 +109,6 @@ Future<Map<int,List<int>>> calcSums (WidgetRef ref,  BuildContext context, Bookm
 
 Future<Widget> loadImage(String? imagePath, String? url) async {
 
-  print("現在のimagePathは: $imagePath");
-  print("現在のurlは: $url");
   if (imagePath != null) {
     bool exists = await File(imagePath).exists();
     if (exists) {
@@ -144,23 +142,15 @@ Future<Widget> loadImage(String? imagePath, String? url) async {
 Future<String?> fetchURLData(String url) async {
 
     try {
-      print("fetchURLData: $url");
 
       Uri? uri = Uri.tryParse(url);
 
       if (uri == null || !uri.hasAbsolutePath || uri.host.isEmpty) {
-        print("Invalid URL");
         return null;
       }
 
-      print("ここまでは行けそうですか？");
 
       final response = await http.get(Uri.parse(url));
-
-      print("ここには来ないのか？");
-
-      print(url);
-      print("response.statusCode: ${response.statusCode}");
 
       if (response.statusCode == 200) {
         var document = parse(response.body);
@@ -185,7 +175,6 @@ Future<String?> fetchURLData(String url) async {
 
 
     } catch (e) {
-      print("ここはfinal response = await http.get(Uri.parse(url))の結果がおかしかったとき。");
       //return Image.asset('assets/images/no_image.png');
       return null;
     }
