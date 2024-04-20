@@ -29,29 +29,7 @@ void showSearchHelpDialog(BuildContext context) {
             width: SizeConfig.blockSizeHorizontal! * 80,  // 幅を適切に設定
             child: Column(
               children: [
-                
-                 /*
-                 Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(width: 10,),
-                      Text("タグについて", style: TextStyle( fontSize: 20)),
-                      IconButton(
-                        icon: Icon(Icons.close, ),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                    ],
-                  ),
-                ),
-                  */
+              
                 Expanded(
                   child: PageView(
                     controller: pageController,
@@ -73,3 +51,20 @@ void showSearchHelpDialog(BuildContext context) {
       },
     );
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

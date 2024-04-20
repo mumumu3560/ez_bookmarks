@@ -68,13 +68,6 @@ Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
     }
       
 
-
-      /*
-      if(context.mounted){
-        Navigator.pop(context); // 成功後、ページを閉じる
-      }
-       */
-
     } on SqliteException {
       //if(mounted) context.showErrorSnackBar(message: e.toString());
       if(context.mounted) context.showErrorSnackBar(message: "同じURLのブックマークが既に存在します。");
