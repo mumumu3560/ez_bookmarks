@@ -30,7 +30,7 @@ Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
 
 
 // ブックマークを追加するメソッド（具体的なロジックは省略）
-  void addBookmark(WidgetRef ref, BuildContext context, String contents, String url, List<String> tags, String? imagePath) async {
+  Future<void> addBookmark(WidgetRef ref, BuildContext context, String contents, String url, List<String> tags, String? imagePath) async {
 
     try{
       if(url == ""){
@@ -38,14 +38,16 @@ Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
         return;
       }
 
-      /*
-      await myDatabase.insertBookmarkWithTags(
-        contents, 
-        url, 
-        tags, 
-        imagePath,
-      );
-       */
+      final bool isExistUrl = await ref.watch(dbAdminNotifierProvider).checkBookmarkWithUrl(url);
+
+      if(isExistUrl){
+        if(context.mounted){
+          context.showErrorSnackBar(message: "同じURLのブックマークが既に存在します。");
+        }
+        return;
+      }
+
+
 
       await ref.watch(dbAdminNotifierProvider).insertBookmarkWithTags(
         contents, 
@@ -67,9 +69,11 @@ Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
       
 
 
+      /*
       if(context.mounted){
         Navigator.pop(context); // 成功後、ページを閉じる
       }
+       */
 
     } on SqliteException {
       //if(mounted) context.showErrorSnackBar(message: e.toString());
@@ -87,44 +91,3 @@ Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
 
 
 
-
-
-
-
-  // ブックマークを追加するメソッド（具体的なロジックは省略）
-  /*
-  void _addBookmark() async {
-
-    try{
-      if(_urlController.text == ""){
-        context.showErrorSnackBar(message: "URLを入力してください。");
-        return;
-      }
-
-      await myDatabase.insertBookmarkWithTags(
-        _contentsController.text, 
-        _urlController.text, 
-        tags, 
-        imagePath,
-      );
-
-      // ここでタグのジャンルをGenreColorsテーブルに挿入または更新
-    for (final tagName in tags) {
-      final tagId = await myDatabase.getTagIdByName(tagName);
-      await myDatabase.insertOrUpdateGenreColor(tagId!, "分類なし", true); // ジャンルは適宜設定または選択させる
-    }
-      
-
-
-      if(mounted){
-        Navigator.pop(context); // 成功後、ページを閉じる
-      }
-
-    } on SqliteException catch (e) {
-      //if(mounted) context.showErrorSnackBar(message: e.toString());
-      if(mounted) context.showErrorSnackBar(message: "同じURLのブックマークが既に存在します。");
-    } catch (e) {
-      if(mounted) context.showErrorSnackBar(message: unexpectedErrorMessage);
-    }
-  }
-   */
