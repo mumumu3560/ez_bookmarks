@@ -4,10 +4,13 @@ import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/bookm
 import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/dialogs.dart';
 import 'package:ez_bookmarks/pages/add_bookmark/add_bookmark_page.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/drawer.dart';
+import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/show_menu.dart';
 import 'package:ez_bookmarks/riverpod/aspect/aspect_switcher.dart';
 import 'package:ez_bookmarks/riverpod/axis_count/axis_count_switcher.dart';
 import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
+import 'package:ez_bookmarks/riverpod/db_switcher/db_switcher.dart';
 import 'package:ez_bookmarks/riverpod/desc_or_asc/desc_or_asc_switcher.dart';
+import 'package:ez_bookmarks/riverpod/interstitial/interstitial_ad_notifier.dart';
 import 'package:ez_bookmarks/riverpod/sort_bookmarks/sort_kind_switcher.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -35,14 +38,20 @@ class BookMarkList extends ConsumerStatefulWidget {
 
 class _BookMarkListState extends ConsumerState<BookMarkList> {
 
+  static Map<String, String> dbNameMap = {
+    "ez_database": "DB1",
+    "ez_database_1": "DB2",
+    "ez_database_2": "DB3",
+  };
+
   Widget? thumbnailImage;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-
+    final interstitialNotifier = ref.read(interstitialAdNotifierProvider.notifier);
+    interstitialNotifier.loadAd();
   }
 
   @override
@@ -70,11 +79,15 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
 
     final dbAd = ref.watch(dbAdminNotifierProvider);
 
+    final dbName = ref.watch(dbSwitcherNotifierProvider);
+
+    final interstitial = ref.watch(interstitialAdNotifierProvider);
+
 
     return Scaffold(
       appBar: widget.tags == null
         ? AppBar(
-          title: const Text("ホーム"),
+          title: Text(dbNameMap[dbName]!),
           actions: [
 
               IconButton(
@@ -103,91 +116,9 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
                   child: const Icon(Icons.more_vert),
                 
                   onTapDown: (details){
+                    showBookmarkSettings(ref, details, context);
                 
-                    //その場に表示するメニューを作成
-                    final position = details.globalPosition;
-                    final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
-                
-                    final RelativeRect positionPopup = RelativeRect.fromLTRB(
-                      position.dx,
-                      position.dy,
-                      overlay.size.width - position.dx,
-                      overlay.size.height - position.dy,
-                    );
-                
-                    showMenu(
-                      context: context,
-                      position: positionPopup,
-                      items: [
-
-                        PopupMenuItem(
-                          child: ListTile(
-                            leading: const Icon(Icons.grid_on),
-                            title: const Text('グリッド変更'),
-                            onTap: () async{
-                              
-                              await FirebaseAnalytics.instance.logEvent(
-                                name: "グリッドを変更する",
-                                parameters: <String, dynamic>{
-                                  'button_name': 'example_button',
-                                },
-                              );
-
-                              //ここでdialogを出して、縦横比とグリッド数を変更させる。
-
-                              if(context.mounted){
-                                Navigator.of(context).pop();
-
-                                showSettingGridAndAspectDialog(context);
-                              }
-
-                            },
-                          ),
-                        ),
-
-
-                        PopupMenuItem(
-                          child: ListTile(
-                            leading: const Icon(Icons.sort),
-                            title: const Text('ソート'),
-                            onTap: () async{
-                              //ここでdialogを出して、縦横比とグリッド数を変更させる。
-
-                              Navigator.of(context).pop();
-
-                              showSettingSortDialog(context); 
-
-                            },
-                          ),
-                        ),
-
-
-
-                        PopupMenuItem(
-                          child: ListTile(
-                            leading: const Icon(Icons.help),
-                            title: const Text('ヘルプ'),
-                            onTap: () {
-                              final analyticsNotifier = ref.read(analyticsNotifierProvider.notifier);
-
-                              analyticsNotifier.onEventOccur("ヘルプボタンが押されました。");
-
-                              /*
-                              FirebaseAnalytics.instance.logEvent(
-                                name: "push_help_button",
-                                parameters: <String, dynamic>{
-                                  'button_name': 'example_button',
-                                },
-                              );
-                               */
-
-                              Navigator.of(context).pop();
-                
-                            },
-                          ),
-                        ),
-                      ],
-                    );
+                    
                 
                   },
                 
@@ -255,67 +186,7 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
                 
                   onTapDown: (details){
                 
-                    //その場に表示するメニューを作成
-                    final position = details.globalPosition;
-                    final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
-                
-                    final RelativeRect positionPopup = RelativeRect.fromLTRB(
-                      position.dx,
-                      position.dy,
-                      overlay.size.width - position.dx,
-                      overlay.size.height - position.dy,
-                    );
-                
-                    showMenu(
-                      context: context,
-                      position: positionPopup,
-                      items: [
-
-                        PopupMenuItem(
-                          child: ListTile(
-                            leading: const Icon(Icons.grid_on),
-                            title: const Text('グリッド変更'),
-                            onTap: () async{
-
-                              Navigator.of(context).pop();
-
-                              showSettingGridAndAspectDialog(context);
-
-                            },
-                          ),
-                        ),
-
-
-                        PopupMenuItem(
-                          child: ListTile(
-                            leading: const Icon(Icons.sort),
-                            title: const Text('ソート変更'),
-                            onTap: () async{
-                              //ここでdialogを出して、縦横比とグリッド数を変更させる。
-
-                              Navigator.of(context).pop();
-
-                              showSettingSortDialog(context); 
-
-                            },
-                          ),
-                        ),
-
-
-
-                        PopupMenuItem(
-                          child: ListTile(
-                            leading: const Icon(Icons.help),
-                            title: const Text('ヘルプ'),
-                            onTap: () {
-                
-                              Navigator.of(context).pop();
-                
-                            },
-                          ),
-                        ),
-                      ],
-                    );
+                    showBookmarkSettingsWithTags(ref, details, context);
                 
                   },
                 
@@ -464,32 +335,3 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
 
 
 
-
-
-/*
-
-/*
-                          ? FutureBuilder(
-                              future: fetchURLData(bookmark.urlText),
-                              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return Container();
-                                  
-                                  //return CircularProgressIndicator();  // データを待っている間はローディング表示
-                                } else if (snapshot.hasError) {
-                                  
-                                  return Image.file(File('assets/images/no_image.png'), fit: BoxFit.cover);  // エラー発生時のフォールバック
-                                } else {
-                                  if(snapshot.data == null){
-                                    return Image.file(File('assets/images/no_image.png'), fit: BoxFit.cover);
-                                  }
-                                  return Image.network(
-                                    snapshot.data,
-                                    fit: BoxFit.cover,
-                                  );  // 成功した場合、取得したURLで画像を表示
-                                }
-                              },
-                            )
-                           */
-                          //: Image.asset('assets/images/no_image.png', fit: BoxFit.cover);
- */
