@@ -2,9 +2,12 @@
 import 'dart:io';
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
 import 'package:ez_bookmarks/env/env.dart';
+import 'package:ez_bookmarks/pages/bookmark_list/bookmark_list_page.dart';
 import 'package:ez_bookmarks/pages/setting/components/almost_logic/almost_logic.dart';
 import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/db_switcher/db_switcher.dart';
+import 'package:ez_bookmarks/riverpod/interstitial/count/interstitial_count_notifier.dart';
+import 'package:ez_bookmarks/riverpod/interstitial/interstitial_ad_notifier.dart';
 import 'package:ez_bookmarks/riverpod/theme/theme_switcher.dart';
 import 'package:ez_bookmarks/utils/various.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +18,31 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-//ここは設定ページでプライバシーポリシー、テーマ切り替え、データベースの切り替えなどを行える
 
-class SettingPage extends HookConsumerWidget{
-  const SettingPage({super.key});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class SettingPage extends ConsumerStatefulWidget {
+  const SettingPage({Key? key}) : super(key: key);
+
+  @override
+  _SettingPageState createState() => _SettingPageState();
+}
+
+class _SettingPageState extends ConsumerState<SettingPage> {
 
   static Map<int,String> dbMap = {
     0: "ez_database",
@@ -37,50 +61,58 @@ class SettingPage extends HookConsumerWidget{
     "ez_database_1": 1,
     "ez_database_2": 2,
   };
+  
+  
 
+  InterstitialAd? _interstitialAd;
+  bool _isLoading = true;  // 広告のロード状態を管理するフラグ
 
   static final String adUnitId = Env.i1;
 
+  @override
+  void initState() {
+    super.initState();
+    //_loadInterstitialAd();
+  }
+
+  /*
+  void _loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: adUnitId,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (InterstitialAd ad) {
+          setState(() {
+            _interstitialAd = ad;
+            _isLoading = false;  // ロード完了
+          });
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          setState(() {
+            _isLoading = false;  // ロード失敗
+          });
+        },
+      ),
+    );
+  }
+   */
 
   @override
-  Widget build(BuildContext context, WidgetRef ref){
+  void dispose() {
+   // _interstitialAd?.dispose();
+    super.dispose();
+  }
 
-    final interstitialAd = useState<InterstitialAd?>(null);
-    final isAdLoaded = useState(false);
+  @override
+  Widget build(BuildContext context){
 
-    useEffect(() {
-  bool isMounted = true;
-
-  InterstitialAd.load(
-    adUnitId: adUnitId,
-    request: const AdRequest(),
-    adLoadCallback: InterstitialAdLoadCallback(
-      onAdLoaded: (ad) {
-        if (isMounted) {
-          interstitialAd.value = ad;
-          isAdLoaded.value = true;
-        } else {
-          ad.dispose(); // もしコンポーネントがアンマウントされていたら、ロードされた広告を即座に破棄
-        }
-      },
-      onAdFailedToLoad: (error) {
-        if (isMounted) {
-          print('広告のロードに失敗しました: $error');
-        }
-      },
-    ),
-  );
-
-  return () {
-    isMounted = false; // コンポーネントがアンマウントされたときにフラグをfalseに設定
-    interstitialAd.value?.dispose(); // 広告を破棄
-  };
-}, const []);
-
+    final interstitial = ref.watch(interstitialAdNotifierProvider);
 
     final nowTheme = ref.watch(themeModeSwitcherNotifierProvider);
 
     final dbName = ref.watch(dbSwitcherNotifierProvider);
+
+    final interstitialCount = ref.watch(interstitialCountNotifierProvider); 
     //final myDatabase = ref.watch(dbAdminNotifierProvider.notifier);
 
     final dbAdmin = ref.watch(dbAdminNotifierProvider);
@@ -95,7 +127,9 @@ class SettingPage extends HookConsumerWidget{
       body: Column(
         children: [
           Expanded(
-            child: Column(
+            child: (interstitial == null)
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
               children: [
                 
                 ListTile(
@@ -197,56 +231,103 @@ class SettingPage extends HookConsumerWidget{
                         ),
                         onPressed: () async {
 
-
-
                           final confirm = await showDialog<bool>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('確認'),
-                                content: const Text('データベースを切り替えますか？'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () => Navigator.of(context).pop(false),
-                                    child: const Text('いいえ'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () => Navigator.of(context).pop(true),
-                                    child: const Text('はい'),
-                                  ),
-                                ],
-                              );
-                            },
-                          ) ?? false;
-
-                          if(!confirm){
-                            return;
-                          }
-
-
-                          if (isAdLoaded.value) {
-                            // 広告がロードされていれば表示
-                            
-                            interstitialAd.value!.fullScreenContentCallback = FullScreenContentCallback(
-                              onAdDismissedFullScreenContent: (InterstitialAd ad) async{
-
-                                ad.dispose();
-                                isAdLoaded.value = false;
-
-                                if(context.mounted){
-                                  context.showSuccessSnackBar(message: "データベースを切り替えました");
-
-                                }
-
-
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('確認'),
+                                  content: const Text('データベースを切り替えますか？'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () => Navigator.of(context).pop(false),
+                                      child: const Text('いいえ'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.of(context).pop(true),
+                                      child: const Text('はい'),
+                                    ),
+                                  ],
+                                );
                               },
-                            );
-                            await interstitialAd.value!.show();
+                            ) ?? false;
+
+                            if(!confirm){
+                              return;
+                            }
+
+
+                            if(context.mounted){
+                              showLoadingDialog(context, 'データベースを切り替えています');
+                            }
+
+                            /*
+                            if(_interstitialAd == null){
+                              if(context.mounted){
+                                Navigator.of(context).pop();
+                              }
+                              return;
+                            }
+                                        
+                            // TODO admob本番
+                            _interstitialAd!.show();
+                            _interstitialAd = null;
+                             */
+
+                            if(interstitialCount % 3 == 0){
+                              final interstitialAdNotifier = ref.read(interstitialAdNotifierProvider.notifier);
+                              interstitialAdNotifier.showAd();
+                              
+                            }
+
+                            print("interstitialCount: $interstitialCount");
+                            print("ここが呼ばれたinterstitialCount");
+
+                            final interstitialCountNotifier = ref.read(interstitialCountNotifierProvider.notifier);
+                            interstitialCountNotifier.updateState();
+
+                            
+
+                            
+
                             await performDatabaseSwitch(entry.value, ref);
-                          } else {
-                            // 広告がロードされていない場合は直接データベース切り替え
-                            performDatabaseSwitch(entry.value, ref);
-                          }
+
+
+                            if(context.mounted){
+                              Navigator.of(context).pop();
+                              //bookmark_listページに飛ぶ。
+
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => const BookMarkList(tags: null,),
+                                ),
+                              );
+
+                              
+
+
+
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('完了'),
+                                    content: const Text('データベースを切り替えました'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () => Navigator.of(context).pop(),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                }
+                              );
+
+                            }
+
+
+
+                          
+                                      
                         },
                         child: Text(dbNameMap[entry.value]!),
                       );
