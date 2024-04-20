@@ -1,24 +1,9 @@
 
 import 'package:ez_bookmarks/drift/database_1/database.dart';
 import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
-
-import 'package:ez_bookmarks/utils/various.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
-
-
-
-
-
-
-
-
-
-
-
-  
 
   Future<void> changeTagGenre(WidgetRef ref, int tagId, String newGenre) async {
     // ジャンルがGenresテーブルに存在するか確認

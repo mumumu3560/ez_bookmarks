@@ -48,7 +48,6 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     final interstitialNotifier = ref.read(interstitialAdNotifierProvider.notifier);
     interstitialNotifier.loadAd();
@@ -71,7 +70,6 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
 
     final aspectRatio = ref.watch(aspectSwitcherNotifierProvider);
 
-    //final widthWatcher = ref.watch(screenWatcherNotifierProvider);
 
     final descOrAsc = ref.watch(descOrAscSwitcherNotifierProvider);
 
@@ -80,8 +78,6 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
     final dbAd = ref.watch(dbAdminNotifierProvider);
 
     final dbName = ref.watch(dbSwitcherNotifierProvider);
-
-    final interstitial = ref.watch(interstitialAdNotifierProvider);
 
 
     return Scaffold(
@@ -208,16 +204,8 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
           Expanded(
             child: StreamBuilder<List<Bookmark>>(
               //ここでデータベースを使って更新を行う。
-              /*
-              stream: widget.tags == null
-                ? myDatabase.watchBookmarks()
-                : myDatabase.watchBookmarks(),
-              
-               */
 
               stream: widget.tags == null
-                //? Stream.fromFuture(myDatabase.findBookmarksContainingAllTags([], sortKind, descOrAsc))
-                //: Stream.fromFuture(myDatabase.findBookmarksContainingAllTags(widget.tags!, sortKind, descOrAsc)),
                 ? Stream.fromFuture(dbAd.findBookmarksContainingAllTags([], sortKind, descOrAsc))
                 : Stream.fromFuture(dbAd.findBookmarksContainingAllTags(widget.tags!, sortKind, descOrAsc)),
               

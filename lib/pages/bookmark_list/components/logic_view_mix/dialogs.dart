@@ -9,11 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ez_bookmarks/riverpod/desc_or_asc/desc_or_asc_switcher.dart';
 
-/*
-ここはlogicとviewが分けにくいと個人的に感じたダイアログをまとめるファイル
-*/
-
-
 void showSelectedTagsDialog(BuildContext context, List<Tag>? tags){
   showDialog(
     context: context,

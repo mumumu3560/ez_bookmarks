@@ -284,8 +284,6 @@ Future<void> _onSearch(List<Tag> tags) async{
                               title: Text(
                                 entry.key, 
                                 style: const TextStyle(
-                                  //color: genreColors[entry.value.first.id] ?? Colors.black
-                  
                                 
                                 ),
                               ),

@@ -2,18 +2,13 @@ import 'dart:io';
 
 import 'package:ez_bookmarks/drift/database_1/database.dart';
 import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
-import 'package:ez_bookmarks/utils/various.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' show parse;
-import 'package:url_launcher/url_launcher.dart';
 
 
-/*
-ここではほとんどlogicだけで構成されているファイル
- */
 
 //ここではブックマークが含むタグをreturn
 Future<int> calcContainBookmarks(WidgetRef ref, List<Tag> tags, String sortBy, bool isDesc) async{
@@ -53,9 +48,8 @@ Future<Map<int,List<int>>> calcSums (WidgetRef ref,  BuildContext context, Bookm
   List<int> tagSumOnlys = [];
 
   for(int i = 0; i < bookmark.tags!.length; i++){
-    //final tagId = await myDatabase.getTagIdByName(bookmark.tags![i]);
+
     final tagId = await ref.read(dbAdminNotifierProvider).getTagIdByName(bookmark.tags![i]);
-    //final tag = await myDatabase.getTagById(tagId!);
     final tag = await ref.read(dbAdminNotifierProvider).getTagById(tagId!);
 
     final List<Tag> updatedTags = List.from(tags ?? []);
@@ -72,11 +66,7 @@ Future<Map<int,List<int>>> calcSums (WidgetRef ref,  BuildContext context, Bookm
   Map<int,List<int>> sums = {0:tagSums, 1:tagSumOnlys};
 
   return sums;
-  /*
-  if(context.mounted){
-    showTagsDialog(context, bookmark, tagSums, tagSumOnlys, tags); 
-  }
-   */
+  
 }
 
 

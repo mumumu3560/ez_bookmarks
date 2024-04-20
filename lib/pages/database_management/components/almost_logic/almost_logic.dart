@@ -3,8 +3,6 @@ import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/db_switcher/db_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:ez_bookmarks/drift/database_1/database.dart'; // 正しいパスに修正してください
-
 import 'package:ez_bookmarks/utils/various.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

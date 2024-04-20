@@ -183,12 +183,7 @@ class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
                       controller: _urlController,
                       decoration: const InputDecoration(
                         labelText: 'URL',
-                        /*
-                        suffixIcon: IconButton(
-                          icon: Icon(Icons.refresh),
-                          onPressed: _addTag,
-                        ),
-                         */
+            
                       ),
                     ),
               
