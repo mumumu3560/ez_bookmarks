@@ -12,9 +12,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class CustomDrawer extends ConsumerWidget {
   static Map<String, String> dbNameMap = {
-    "ez_database": "DB1",
-    "ez_database_1": "DB2",
-    "ez_database_2": "DB3",
+    "classifier_database_1": "DB1",
+    "classifier_database_2": "DB2",
+    "classifier_database_3": "DB3",
   };
 
 
@@ -33,8 +33,8 @@ class CustomDrawer extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ListTile(
-                    subtitle: Text('Bookmarks with Tags'),
-                    title: Text(dbNameMap[dbName]!),
+                    title: Text('Classifier'),
+                    subtitle: Text(dbNameMap[dbName]!),
                   ),
                 ],
               )
@@ -44,7 +44,7 @@ class CustomDrawer extends ConsumerWidget {
             title: const Text('タグから検索&編集'),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const SearchPage(),
+                builder: (context) => SearchPage(),
               ));
             },
           ),
@@ -74,7 +74,7 @@ class CustomDrawer extends ConsumerWidget {
             title: const Text('お問い合わせ'),
             onTap: () async {
               if(Platform.isAndroid){
-                  const String url = "https://forms.gle/psbfDJXdyDfa2tb97";
+                  const String url = "https://forms.gle/KkHYp3keoW5iepQN9";
                   if(await canLaunchUrl(Uri.parse(url))){
                     await launchUrl(Uri.parse(url));
                   }

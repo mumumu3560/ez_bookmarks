@@ -23,21 +23,21 @@ class SettingPage extends ConsumerWidget {
   const SettingPage({super.key});
 
   static Map<int,String> dbMap = {
-    0: "ez_database",
-    1: "ez_database_1",
-    2: "ez_database_2",
+    0: "classifier_database_1",
+    1: "classifier_database_2",
+    2: "classifier_database_3",
   };
 
   static Map<String, String> dbNameMap = {
-    "ez_database": "DB1",
-    "ez_database_1": "DB2",
-    "ez_database_2": "DB3",
+    "classifier_database_1": "DB1",
+    "classifier_database_2": "DB2",
+    "classifier_database_3": "DB3",
   };
 
   static Map<String, int> dbReMap = {
-    "ez_database": 0,
-    "ez_database_1": 1,
-    "ez_database_2": 2,
+    "classifier_database_1": 0,
+    "classifier_database_2": 1,
+    "classifier_database_3": 2,
   };
 
   static final String adUnitId = Env.i1;
@@ -74,6 +74,12 @@ class SettingPage extends ConsumerWidget {
                 ListTile(
                   title: const Text('プライバシーポリシー'),
                   onTap: () async{
+
+                    final url = Uri.parse("https://ez-bookmarks.pages.dev/ja/privacy-policy");
+
+                    if( await canLaunchUrl(url)){
+                      await launchUrl(url);
+                    }
             
                     
             
