@@ -1,3 +1,4 @@
+
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/bookmark_list_page.dart';
 import 'package:ez_bookmarks/pages/search/components/almost_logic/almost_logic.dart';
@@ -139,6 +140,7 @@ Future<void> _onSearch(List<Tag> tags) async{
     super.initState();
     //_tagsByGenre = getTagsByGenre();
     initFetch();
+    _tagsByGenre = getTagsByGenre(ref);
   }
 
 
@@ -266,7 +268,8 @@ Future<void> _onSearch(List<Tag> tags) async{
                   
                   FutureBuilder<Map<String, List<Tag>>>(
                     //future: _tagsByGenre,
-                    future: getTagsByGenre(ref),
+                    //future: getTagsByGenre(ref),
+                    future: _tagsByGenre,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
