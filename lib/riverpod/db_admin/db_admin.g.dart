@@ -6,7 +6,7 @@ part of 'db_admin.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dbAdminNotifierHash() => r'706e62842e72226138a9f95ddf6415806c20174f';
+String _$dbAdminNotifierHash() => r'23e1b42b28da51c2766fc5250c5085280a7b4bec';
 
 /// See also [DbAdminNotifier].
 @ProviderFor(DbAdminNotifier)
