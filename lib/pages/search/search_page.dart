@@ -7,7 +7,7 @@ import 'package:ez_bookmarks/riverpod/desc_or_asc/desc_or_asc_switcher.dart';
 import 'package:ez_bookmarks/riverpod/sort_bookmarks/sort_kind_switcher.dart';
 import 'package:ez_bookmarks/utils/various.dart';
 import 'package:flutter/material.dart';
-import 'package:ez_bookmarks/drift/database_1/database.dart';
+import 'package:ez_bookmarks/database/drift/database_1/database.dart';
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
