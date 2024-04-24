@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
 import 'package:ez_bookmarks/pages/add_bookmark/components/almost_logic/almost_logic.dart';
 import 'package:flutter/material.dart';
-import 'package:ez_bookmarks/drift/database_1/database.dart';
+import 'package:ez_bookmarks/database/drift/database_1/database.dart';
 
 import 'package:ez_bookmarks/utils/various.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -101,6 +101,7 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
   final fileExists = file.existsSync();
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text('追加'),
         actions: [
@@ -136,6 +137,7 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
             ),
 
           
+          /*
           IconButton(
             //helpマーク
             icon: const Icon(Icons.help),
@@ -160,6 +162,7 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
             },
 
           ),
+           */
         ],
       ),
       body: Column(

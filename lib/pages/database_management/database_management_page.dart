@@ -40,6 +40,7 @@ Widget build(BuildContext context, WidgetRef ref) {
                       ),
             
                       IconButton(
+                        //onPressed: () => showImportHelpDialog(context),
                         onPressed: () => showImportHelpDialog(context),
                         icon: const Icon(Icons.help)
                       )
@@ -65,6 +66,7 @@ Widget build(BuildContext context, WidgetRef ref) {
                       ),
                       IconButton(
                         onPressed: () async{
+                          //showBackupHelpDialog(context);
                           showBackupHelpDialog(context);
                         } , 
                         icon: const Icon(Icons.help)

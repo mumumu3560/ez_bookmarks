@@ -66,6 +66,7 @@ void showBookmarkSettings(WidgetRef ref, TapDownDetails details, BuildContext co
 
 
 
+      /*
       PopupMenuItem(
         child: ListTile(
           leading: const Icon(Icons.help),
@@ -89,6 +90,7 @@ void showBookmarkSettings(WidgetRef ref, TapDownDetails details, BuildContext co
           },
         ),
       ),
+       */
     ],
   );
 }
@@ -145,6 +147,7 @@ void showBookmarkSettingsWithTags(WidgetRef ref, TapDownDetails details, BuildCo
 
 
 
+      /*
       PopupMenuItem(
         child: ListTile(
           leading: const Icon(Icons.help),
@@ -156,6 +159,7 @@ void showBookmarkSettingsWithTags(WidgetRef ref, TapDownDetails details, BuildCo
           },
         ),
       ),
+       */
     ],
   );
 }

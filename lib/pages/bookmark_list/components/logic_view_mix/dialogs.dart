@@ -1,4 +1,4 @@
-import 'package:ez_bookmarks/drift/database_1/database.dart';
+import 'package:ez_bookmarks/database/drift/database_1/database.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/bookmark_list_page.dart';
 import 'package:ez_bookmarks/riverpod/aspect/aspect_switcher.dart';
 import 'package:ez_bookmarks/riverpod/axis_count/axis_count_switcher.dart';

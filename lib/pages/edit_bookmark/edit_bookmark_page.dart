@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
 import 'package:ez_bookmarks/pages/edit_bookmark/components/almost_logic/almost_logic.dart';
 import 'package:flutter/material.dart';
-import 'package:ez_bookmarks/drift/database_1/database.dart';
+import 'package:ez_bookmarks/database/drift/database_1/database.dart';
 
 import 'package:ez_bookmarks/utils/various.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -135,6 +135,7 @@ class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
             child: const Text('完了'),
           ),
 
+          /*
           IconButton(
             //helpマーク
             icon: const Icon(Icons.help),
@@ -159,6 +160,7 @@ class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
             },
 
           ),
+           */
         ],
       ),
       body: Column(
