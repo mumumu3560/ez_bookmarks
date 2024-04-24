@@ -1,5 +1,5 @@
 
-import 'package:ez_bookmarks/drift/database_1/database.dart';
+import 'package:ez_bookmarks/database/drift/database_1/database.dart';
 import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -45,7 +45,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
   Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
 
-  final dbAd = ref.watch(dbAdminNotifierProvider);
+  //final dbAd = ref.watch(dbAdminNotifierProvider);
+  final dbAd = ref.read(dbAdminNotifierProvider);
     
     //final allTags = await myDatabase.allTags; // 全てのタグを取得
     final allTags = await dbAd.allTags; // 全てのタグを取得
