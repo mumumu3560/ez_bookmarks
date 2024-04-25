@@ -11,7 +11,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
     
     //final allTags = await myDatabase.allTags; // 全てのタグを取得
-    final allTags = await ref.watch(dbAdminNotifierProvider).allTags; // 全てのタグを取得
+    //final allTags = await ref.watch(dbAdminNotifierProvider).allTags; // 全てのタグを取得
+    final dbAd = ref.read(dbAdminNotifierProvider);
+    final allTags = await dbAd.allTags; // 全てのタグを取得
+    
     Map<String, List<Tag>> tagsByGenre = {};
 
     for (final tag in allTags) {

@@ -46,7 +46,7 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
   @override
   void initState() {
     // TODO: implement initState
-    //_tagsByGenre = getTagsByGenre(ref);
+    _tagsByGenre = getTagsByGenre(ref);
   }
   
   @override
@@ -246,7 +246,8 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
                           
                     
                     FutureBuilder<Map<String, List<Tag>>>(
-                      future: getTagsByGenre(ref),
+                      //future: getTagsByGenre(ref),
+                      future: _tagsByGenre,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return const Center(child: CircularProgressIndicator());

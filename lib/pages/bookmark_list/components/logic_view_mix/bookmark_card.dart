@@ -5,6 +5,7 @@ import 'package:ez_bookmarks/pages/edit_bookmark/edit_bookmark_page.dart';
 import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/desc_or_asc/desc_or_asc_switcher.dart';
 import 'package:ez_bookmarks/riverpod/sort_bookmarks/sort_kind_switcher.dart';
+import 'package:ez_bookmarks/utils/various.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -187,6 +188,7 @@ class _BookmarkCardState extends ConsumerState<BookmarkCard> with AutomaticKeepA
                   await dbAd.deleteBookmark(widget.bookmark);
                               
                   if(context.mounted){
+                    context.showSuccessSnackBar(message: "削除しました。");
                     Navigator.pop(context);
                   } // Close the dialog
   

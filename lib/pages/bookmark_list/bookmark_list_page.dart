@@ -1,3 +1,4 @@
+import 'package:ez_bookmarks/admob/grid_native_ads.dart';
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/almost_logic/almost_logic.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/bookmark_card.dart';
@@ -16,7 +17,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:ez_bookmarks/drift/database_1/database.dart';
+import 'package:ez_bookmarks/database/drift/database_1/database.dart';
 import 'package:ez_bookmarks/riverpod/firebase_analytics/analytics.dart';
 
 import 'package:ez_bookmarks/utils/various.dart';
@@ -39,9 +40,9 @@ class BookMarkList extends ConsumerStatefulWidget {
 class _BookMarkListState extends ConsumerState<BookMarkList> {
 
   static Map<String, String> dbNameMap = {
-    "ez_database": "DB1",
-    "ez_database_1": "DB2",
-    "ez_database_2": "DB3",
+    "classifier_database_1": "DB1",
+    "classifier_database_2": "DB2",
+    "classifier_database_3": "DB3",
   };
 
   Widget? thumbnailImage;
@@ -274,6 +275,15 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
                       //ここに広告
                       return LayoutBuilder(
                         builder: (context, constraints){
+                          //heightとwidthはaspectRatioとaxisCountによって変わる。
+                          final gridHeight = constraints.maxHeight;
+                          final gridWidth = constraints.maxWidth;
+                          return Card(
+                            clipBehavior: Clip.antiAlias,
+                            child: GridNativeAdWidget(height: gridHeight, width: gridWidth)
+                          );
+
+                          /*
                           return Container(
                             //height: SizeConfig.blockSizeVertical! * 10,
                             //color: Colors.white,
@@ -284,6 +294,7 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
                               adHeight: constraints.maxHeight.toInt(),
                             ),
                           );
+                           */
                         }
                       );
 
@@ -302,12 +313,13 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
             color: Colors.white,
             //TODO Admob
 
+            
+
+            /*
             child: InlineAdaptiveAdBanner(
               requestId: "BOOKMARK", 
               adHeight: SizeConfig.blockSizeVertical!.toInt() * 10,
             ),
-
-            /*
             
             */
           ),

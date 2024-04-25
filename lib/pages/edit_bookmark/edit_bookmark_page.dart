@@ -49,7 +49,7 @@ class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    //_tagsByGenre = getTagsByGenre(ref);
+    _tagsByGenre = getTagsByGenre(ref);
     setState(() {
       _contentsController.text = widget.bookmark.content;
       _urlController.text = widget.bookmark.urlText;
@@ -253,7 +253,8 @@ class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
                     const Text("すでに存在するタグ一覧"),
               
                     FutureBuilder<Map<String, List<Tag>>>(
-                      future: getTagsByGenre(ref),
+                      //future: getTagsByGenre(ref),
+                      future: _tagsByGenre,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return const Center(child: CircularProgressIndicator());

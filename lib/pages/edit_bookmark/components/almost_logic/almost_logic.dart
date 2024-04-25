@@ -12,10 +12,11 @@ Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
     
     
 
-    final dbAd = ref.watch(dbAdminNotifierProvider);
+    final dbAd = ref.read(dbAdminNotifierProvider);
 
     //final allTags = await myDatabase.allTags; // 全てのタグを取得
     final allTags = await dbAd.allTags; // 全てのタグを取得
+
 
     Map<String, List<Tag>> tagsByGenre = {};
 
