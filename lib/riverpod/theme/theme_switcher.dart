@@ -8,7 +8,8 @@ class ThemeModeSwitcherNotifier extends _$ThemeModeSwitcherNotifier{
 
   @override
   Future<int> build() async{
-    final dbAdmin = ref.watch(dbAdminNotifierProvider);
+    //final dbAdmin = ref.watch(dbAdminNotifierProvider);
+    final dbAdmin = ref.read(dbAdminNotifierProvider);
     //databaseが初期化されていない場合は、ライトモードを返す。
     //int themeId = await myDatabase.getTheme();
     int? themeId = await dbAdmin.getTheme();

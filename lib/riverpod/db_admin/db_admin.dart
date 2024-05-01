@@ -9,7 +9,7 @@ class DbAdminNotifier extends _$DbAdminNotifier{
 
   @override
   MyDatabase build() {
-    String db = "classifier_database_1";
+    String db = "classifier_database1";
     MyDatabase myDB = MyDatabase(dbName: db);
     return myDB;
   }

@@ -1,6 +1,4 @@
 
-import 'package:ez_bookmarks/drift/database_1/database.dart';
-import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:flutter/material.dart';
 
 //https://qiita.com/kokogento/items/87aaf0a0fbc192e51504

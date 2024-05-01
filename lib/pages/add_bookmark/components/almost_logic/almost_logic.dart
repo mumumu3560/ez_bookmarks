@@ -7,7 +7,6 @@ import 'package:ez_bookmarks/database/drift/database_1/database.dart';
 import 'package:ez_bookmarks/utils/various.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
     
     //final allTags = await myDatabase.allTags; // 全てのタグを取得

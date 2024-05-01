@@ -8,7 +8,7 @@ class DbSwitcherNotifier extends _$DbSwitcherNotifier{
   @override
   String build() {
     //最初はclassifier_databaseを返す。
-    String db = "classifier_database_1";
+    String db = "classifier_database1";
     return db;
   }
 

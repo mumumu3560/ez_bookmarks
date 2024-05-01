@@ -1,5 +1,3 @@
-
-import 'dart:io';
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
 import 'package:ez_bookmarks/env/env.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/bookmark_list_page.dart';
@@ -11,33 +9,31 @@ import 'package:ez_bookmarks/riverpod/interstitial/interstitial_ad_notifier.dart
 import 'package:ez_bookmarks/riverpod/theme/theme_switcher.dart';
 import 'package:ez_bookmarks/utils/various.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 
 class SettingPage extends ConsumerWidget {
   const SettingPage({super.key});
 
   static Map<int,String> dbMap = {
-    0: "classifier_database_1",
-    1: "classifier_database_2",
-    2: "classifier_database_3",
+    0: "classifier_database1",
+    1: "classifier_database2",
+    2: "classifier_database3",
   };
 
   static Map<String, String> dbNameMap = {
-    "classifier_database_1": "DB1",
-    "classifier_database_2": "DB2",
-    "classifier_database_3": "DB3",
+    "classifier_database1": "DB1",
+    "classifier_database2": "DB2",
+    "classifier_database3": "DB3",
   };
 
   static Map<String, int> dbReMap = {
-    "classifier_database_1": 0,
-    "classifier_database_2": 1,
-    "classifier_database_3": 2,
+    "classifier_database1": 0,
+    "classifier_database2": 1,
+    "classifier_database3": 2,
   };
 
   static final String adUnitId = Env.i1;
@@ -181,7 +177,7 @@ class SettingPage extends ConsumerWidget {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: const Text('確認'),
-                                  content: const Text('データベースを切り替えますか？'),
+                                  content: const Text('データベースを切り替えますか？\n(3回に一回広告が表示されます)'),
                                   actions: <Widget>[
                                     TextButton(
                                       onPressed: () => Navigator.of(context).pop(false),

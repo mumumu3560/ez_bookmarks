@@ -12,6 +12,7 @@ import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/db_switcher/db_switcher.dart';
 import 'package:ez_bookmarks/riverpod/desc_or_asc/desc_or_asc_switcher.dart';
 import 'package:ez_bookmarks/riverpod/interstitial/interstitial_ad_notifier.dart';
+import 'package:ez_bookmarks/riverpod/local/language.dart';
 import 'package:ez_bookmarks/riverpod/sort_bookmarks/sort_kind_switcher.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -40,9 +41,9 @@ class BookMarkList extends ConsumerStatefulWidget {
 class _BookMarkListState extends ConsumerState<BookMarkList> {
 
   static Map<String, String> dbNameMap = {
-    "classifier_database_1": "DB1",
-    "classifier_database_2": "DB2",
-    "classifier_database_3": "DB3",
+    "classifier_database1": "DB1",
+    "classifier_database2": "DB2",
+    "classifier_database3": "DB3",
   };
 
   Widget? thumbnailImage;
@@ -79,6 +80,7 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
     final dbAd = ref.watch(dbAdminNotifierProvider);
 
     final dbName = ref.watch(dbSwitcherNotifierProvider);
+
 
 
     return Scaffold(
@@ -312,14 +314,17 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
             height: SizeConfig.blockSizeVertical! * 10,
             color: Colors.white,
             //TODO Admob
-
-            
-
-            /*
             child: InlineAdaptiveAdBanner(
               requestId: "BOOKMARK", 
               adHeight: SizeConfig.blockSizeVertical!.toInt() * 10,
             ),
+            
+            
+
+            /*
+            
+
+            
             
             */
           ),

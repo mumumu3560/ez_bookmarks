@@ -4,6 +4,7 @@ import 'package:ez_bookmarks/pages/database_management/database_management_page.
 import 'package:ez_bookmarks/pages/search/search_page.dart';
 import 'package:ez_bookmarks/pages/setting/setting_page.dart';
 import 'package:ez_bookmarks/riverpod/db_switcher/db_switcher.dart';
+import 'package:ez_bookmarks/riverpod/local/language.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -12,9 +13,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class CustomDrawer extends ConsumerWidget {
   static Map<String, String> dbNameMap = {
-    "classifier_database_1": "DB1",
-    "classifier_database_2": "DB2",
-    "classifier_database_3": "DB3",
+    "classifier_database1": "DB1",
+    "classifier_database2": "DB2",
+    "classifier_database3": "DB3",
   };
 
 
