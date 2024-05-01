@@ -10,26 +10,26 @@ import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
 import io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin
 
-class ListTileNativeAdFactory(val context: Context) : GoogleMobileAdsPlugin.NativeAdFactory {
+class GridNativeAdLightFactory(val context: Context) : GoogleMobileAdsPlugin.NativeAdFactory {
 
     override fun createNativeAd(
             nativeAd: NativeAd,
             customOptions: MutableMap<String, Any>?
     ): NativeAdView {
        // val nativeAdView = LayoutInflater.from(context)
-        //        .inflate(R.layout.list_tile_native_ad, null) as NativeAdView
+        //        .inflate(R.layout.grid_native_ad_light, null) as NativeAdView
 
         val nativeAdView = LayoutInflater.from(context)
-                .inflate(R.layout.list_tile_native_ad, null, false) as NativeAdView
+                .inflate(R.layout.grid_native_ad_light, null, false) as NativeAdView
 
 
         with(nativeAdView) {
             val attributionViewSmall =
-                    findViewById<TextView>(R.id.tv_list_tile_native_ad_attribution_small)
+                    findViewById<TextView>(R.id.tv_grid_native_ad_light_attribution_small)
             val attributionViewLarge =
-                    findViewById<TextView>(R.id.tv_list_tile_native_ad_attribution_large)
+                    findViewById<TextView>(R.id.tv_grid_native_ad_light_attribution_large)
 
-            val iconView = findViewById<ImageView>(R.id.iv_list_tile_native_ad_icon)
+            val iconView = findViewById<ImageView>(R.id.iv_grid_native_ad_light_icon)
             val icon = nativeAd.icon
             if (icon != null) {
                 attributionViewSmall.visibility = View.VISIBLE
@@ -41,11 +41,11 @@ class ListTileNativeAdFactory(val context: Context) : GoogleMobileAdsPlugin.Nati
             }
             this.iconView = iconView
 
-            val headlineView = findViewById<TextView>(R.id.tv_list_tile_native_ad_headline)
+            val headlineView = findViewById<TextView>(R.id.tv_grid_native_ad_light_headline)
             headlineView.text = nativeAd.headline
             this.headlineView = headlineView
 
-            val bodyView = findViewById<TextView>(R.id.tv_list_tile_native_ad_body)
+            val bodyView = findViewById<TextView>(R.id.tv_grid_native_ad_light_body)
             with(bodyView) {
                 text = nativeAd.body
                 visibility = if (nativeAd.body.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
