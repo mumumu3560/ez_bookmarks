@@ -1108,10 +1108,6 @@ Future<int?> getTheme() async {
 
     await file.parent.create(recursive: true);
 
-    if (await file.exists()) {
-      await file.delete();
-    }
-
     // データベースを新しいファイルにエクスポート
     await customStatement('VACUUM INTO ?', [file.path]);
   }
