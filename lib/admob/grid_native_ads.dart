@@ -1,8 +1,10 @@
 import 'package:ez_bookmarks/env/env.dart';
+import 'package:ez_bookmarks/riverpod/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class GridNativeAdWidget extends StatefulWidget {
+class GridNativeAdWidget extends ConsumerStatefulWidget {
   final double height;
   final double width;
 
@@ -16,14 +18,22 @@ class GridNativeAdWidget extends StatefulWidget {
   _GridNativeAdWidgetState createState() => _GridNativeAdWidgetState();
 }
 
-class _GridNativeAdWidgetState extends State<GridNativeAdWidget> {
+class _GridNativeAdWidgetState extends ConsumerState<GridNativeAdWidget> {
   NativeAd? _nativeAd;
   bool _isAdLoaded = false;
 
-  void _loadNativeAd() {
+  Future<void> _loadNativeAd(WidgetRef ref) async{
+    //ここでテーマモードのintを取得したい。
+    final themeInt = ref.read(themeModeSwitcherNotifierProvider);
+
+    String factoryIdNow =  themeInt == const AsyncValue.data(0) ? 'gridLight' : 'gridDark';
+
+
+    //final ref = themeInt == 0 ? Env.n1 : Env.n2;
     _nativeAd = NativeAd(
       adUnitId: Env.n1,  // 広告ユニットID、自分はenviedを使っている
-      factoryId: 'listTile',  // MainActivity.ktで指定したfactoryId
+      factoryId: factoryIdNow,  // MainActivity.ktで指定したfactoryId
+      //factoryId: 'listTile',  // MainActivity.ktで指定したfactoryId
       nativeAdOptions: NativeAdOptions(
         mediaAspectRatio: MediaAspectRatio.any,
       ),
@@ -78,7 +88,7 @@ class _GridNativeAdWidgetState extends State<GridNativeAdWidget> {
   @override
   void initState() {
     super.initState();
-    _loadNativeAd();
+    _loadNativeAd(ref);
   }
 
   @override
@@ -89,6 +99,7 @@ class _GridNativeAdWidgetState extends State<GridNativeAdWidget> {
 
   @override
   Widget build(BuildContext context) {
+    
     return SizedBox(
       width: widget.width,
       height: widget.height,
