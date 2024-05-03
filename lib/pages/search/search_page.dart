@@ -1,5 +1,6 @@
 
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
+import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/bookmark_list_page.dart';
 import 'package:ez_bookmarks/pages/search/components/almost_logic/almost_logic.dart';
 import 'package:ez_bookmarks/pages/search/components/almost_view/dialogs.dart';
@@ -60,19 +61,20 @@ Future<void> _onSearch(List<Tag> tags) async{
   //このダイアログでは、genreColorsからジャンルを選択して、そのジャンルに属するタグのジャンルを変更することもできる。
   //新しく自分で入力したものを選ぶこともできる。
   void showEditDialog(List<Tag> selectedTags){
+    final translations = Translations.of(context);
 
     showDialog(
       context: context, 
       builder: (context) {
         return AlertDialog(
-          title: const Text("ジャンルの編集"),
+          title: Text(translations.search.genre_dialog.title),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
-                  decoration: const InputDecoration(
-                    labelText: "ジャンル名",
+                  decoration: InputDecoration(
+                    labelText: translations.search.genre_dialog.form,
                   ),
                   controller: _genreController,
                 ),
@@ -99,7 +101,7 @@ Future<void> _onSearch(List<Tag> tags) async{
               onPressed: () {
                 Navigator.of(context).pop();
               }, 
-              child: const Text("キャンセル"),
+              child: Text(translations.search.genre_dialog.cancel),
             ),
             TextButton(
               onPressed: () async{
@@ -123,7 +125,7 @@ Future<void> _onSearch(List<Tag> tags) async{
                   Navigator.of(context).pop();
                 }
               }, 
-              child: const Text("変更"),
+              child: Text(translations.search.genre_dialog.save),
             ),
             
           ],
@@ -153,6 +155,8 @@ Future<void> _onSearch(List<Tag> tags) async{
     final sortKind = ref.watch(sortKindSwitcherNotifierProvider);
     final descOrAsc = ref.watch(descOrAscSwitcherNotifierProvider);
 
+    final translations = Translations.of(context);
+
     return Scaffold(
 
       /*
@@ -160,7 +164,7 @@ Future<void> _onSearch(List<Tag> tags) async{
        */
 
       appBar: AppBar(
-        title: const Text("タグ編集&検索"),
+        title: Text(translations.search.title),
         actions: [
           IconButton(
             onPressed: () => showSearchHelpDialog(context),
@@ -177,8 +181,7 @@ Future<void> _onSearch(List<Tag> tags) async{
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  //Text("選択したタグ ${selectedTags.length}個: ${containNum}件一致"),
-                  Text("$containNum件のブックマークが見つかりました"),
+                  Text("$containNum ${translations.search.found}"),
 
                   SizedBox(height: SizeConfig.blockSizeVertical! * 2,),
 
@@ -230,7 +233,7 @@ Future<void> _onSearch(List<Tag> tags) async{
                           }
                         },
                         
-                        child: const Text("検索"),
+                        child: Text(translations.search.search_button),
                       ),
 
                       SizedBox(width: SizeConfig.blockSizeHorizontal! * 2,),
@@ -243,7 +246,7 @@ Future<void> _onSearch(List<Tag> tags) async{
                           });
                         },
                         //icon: Icon(Icons.clear),
-                        child: const Text("クリア"),
+                        child: Text(translations.search.clear_button),
                       ),
 
                       SizedBox(width: SizeConfig.blockSizeHorizontal! * 2,),
@@ -259,7 +262,7 @@ Future<void> _onSearch(List<Tag> tags) async{
                            */
                         },
                         //icon: Icon(Icons.clear),
-                        child: const Text("ジャンル変更"),
+                        child: Text(translations.search.change_genre),
                       ),
                     ],
                   ),
@@ -285,7 +288,9 @@ Future<void> _onSearch(List<Tag> tags) async{
                           return Card(
                             child: ExpansionTile(
                               title: Text(
-                                entry.key, 
+                                entry.key == "分類なし" 
+                                  ? translations.database.no_genre
+                                  : entry.key, 
                                 style: const TextStyle(
                                 
                                 ),
