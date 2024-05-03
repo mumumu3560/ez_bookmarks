@@ -1,7 +1,8 @@
 import 'package:ez_bookmarks/admob/grid_native_ads.dart';
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
+import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/almost_logic/almost_logic.dart';
-import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/bookmark_card.dart';
+import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/bookmark_card/bookmark_card.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/dialogs.dart';
 import 'package:ez_bookmarks/pages/add_bookmark/add_bookmark_page.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/drawer.dart';
@@ -81,6 +82,8 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
 
     final dbName = ref.watch(dbSwitcherNotifierProvider);
 
+    final translocations = Translations.of(context);
+
 
 
     return Scaffold(
@@ -139,8 +142,8 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
               showSelectedTagsDialog(context, widget.tags);
 
             },
-            child: const Text(
-              "選択したタグ"
+            child: Text(
+              translocations.home.title_with_tags
             ),
 
           ),
@@ -269,7 +272,7 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
 
 
                       //automatickeepalive
-                      return BookmarkCard(bookmark: bookmark, imageWidget: imageWidget);
+                      return BookmarkCard(tags: widget.tags, bookmark: bookmark, imageWidget: imageWidget);
                   
 
                     }
