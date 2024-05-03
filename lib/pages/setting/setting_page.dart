@@ -1,11 +1,13 @@
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
 import 'package:ez_bookmarks/env/env.dart';
+import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/bookmark_list_page.dart';
 import 'package:ez_bookmarks/pages/setting/components/almost_logic/almost_logic.dart';
 import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/db_switcher/db_switcher.dart';
 import 'package:ez_bookmarks/riverpod/interstitial/count/interstitial_count_notifier.dart';
 import 'package:ez_bookmarks/riverpod/interstitial/interstitial_ad_notifier.dart';
+import 'package:ez_bookmarks/riverpod/local/language.dart';
 import 'package:ez_bookmarks/riverpod/theme/theme_switcher.dart';
 import 'package:ez_bookmarks/utils/various.dart';
 import 'package:flutter/material.dart';
@@ -52,10 +54,12 @@ class SettingPage extends ConsumerWidget {
     final interstitialCount = ref.watch(interstitialCountNotifierProvider); 
     final dbAdmin = ref.watch(dbAdminNotifierProvider);
 
+    final translations = Translations.of(context);
+
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('設定'),
+        title: Text(translations.settings.title),
       ),
 
       //ListTileのリストを作成
@@ -68,10 +72,10 @@ class SettingPage extends ConsumerWidget {
               children: [
                 
                 ListTile(
-                  title: const Text('プライバシーポリシー'),
+                  title: Text(translations.settings.privacy_policy),
                   onTap: () async{
 
-                    final url = Uri.parse("https://ez-bookmarks.pages.dev/ja/privacy-policy");
+                    final url = Uri.parse(translations.external_url.privacy_policy);
 
                     if( await canLaunchUrl(url)){
                       await launchUrl(url);
@@ -84,7 +88,7 @@ class SettingPage extends ConsumerWidget {
                 ListTile(
                   title: Row(
                     children: [
-                      const Text('テーマ切り替え'),
+                      Text(translations.settings.change_theme),
                       nowTheme.when(
                         data: (data) => IconButton(
                           onPressed: () async{
@@ -117,7 +121,7 @@ class SettingPage extends ConsumerWidget {
                           }, 
                           icon: data == 0 ? const Icon(Icons.light_mode) : const Icon(Icons.dark_mode),
                         ),
-                        error: (error, stackTrace) => const Text('エラーが発生しました'),
+                        error: (error, stackTrace) => const Text('error'),
                         loading: () => const CircularProgressIndicator(),
                       ),
                     ],
@@ -152,10 +156,22 @@ class SettingPage extends ConsumerWidget {
 
                   },
                 ),
+
+                ListTile(
+                  //言語切り替え
+                  //title: Text(translations.settings.),
+                  onTap: () async {
+                    final languageNotifier = ref.read(languageNotifierProvider.notifier);
+                    final currentLocale = ref.read(languageNotifierProvider);
+
+                    final newLocale = currentLocale == AppLocale.ja ? AppLocale.en : AppLocale.ja;
+                    languageNotifier.updateLocale(newLocale);
+                  },
+                ),
             
             
                 ListTile(
-                  title: const Text('データベースの切り替え'),
+                  title: Text(translations.settings.change_database),
                   subtitle: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     //幅を指定
@@ -171,21 +187,22 @@ class SettingPage extends ConsumerWidget {
                           ),
                         ),
                         onPressed: () async {
+                          
 
                           final confirm = await showDialog<bool>(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: const Text('確認'),
-                                  content: const Text('データベースを切り替えますか？\n(3回に一回広告が表示されます)'),
+                                  title: Text(translations.settings.database_dialog.title),
+                                  content: Text('${translations.settings.database_dialog.text}'),
                                   actions: <Widget>[
                                     TextButton(
                                       onPressed: () => Navigator.of(context).pop(false),
-                                      child: const Text('いいえ'),
+                                      child: Text(translations.settings.database_dialog.no),
                                     ),
                                     TextButton(
                                       onPressed: () => Navigator.of(context).pop(true),
-                                      child: const Text('はい'),
+                                      child: Text(translations.settings.database_dialog.yes),
                                     ),
                                   ],
                                 );
@@ -198,7 +215,7 @@ class SettingPage extends ConsumerWidget {
 
 
                             if(context.mounted){
-                              showLoadingDialog(context, 'データベースを切り替えています');
+                              showLoadingDialog(context, translations.settings.loading_dialog);
                             }
 
 
@@ -236,12 +253,12 @@ class SettingPage extends ConsumerWidget {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: const Text('完了'),
-                                    content: const Text('データベースを切り替えました'),
+                                    title: Text(translations.settings.on_change_database.complete),
+                                    content: Text(translations.settings.on_change_database.text),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () => Navigator.of(context).pop(),
-                                        child: const Text('OK'),
+                                        child: Text(translations.settings.on_change_database.ok),
                                       ),
                                     ],
                                   );
@@ -266,7 +283,7 @@ class SettingPage extends ConsumerWidget {
                   alignment: Alignment.bottomCenter,
                   child: Container(
                     padding: EdgeInsets.all(16),
-                    child: Text('現在のデータベース: ${dbNameMap[dbName]}'),
+                    child: Text('${translations.settings.current_database}: ${dbNameMap[dbName]}'),
                   ),
                 ),
 

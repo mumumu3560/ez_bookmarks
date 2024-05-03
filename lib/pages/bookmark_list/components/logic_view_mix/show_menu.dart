@@ -1,3 +1,4 @@
+import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/dialogs.dart';
 import 'package:ez_bookmarks/riverpod/firebase_analytics/analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -10,6 +11,8 @@ void showBookmarkSettings(WidgetRef ref, TapDownDetails details, BuildContext co
   //その場に表示するメニューを作成
   final position = details.globalPosition;
   final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+
+  final translations = Translations.of(context);
 
   final RelativeRect positionPopup = RelativeRect.fromLTRB(
     position.dx,
@@ -26,7 +29,7 @@ void showBookmarkSettings(WidgetRef ref, TapDownDetails details, BuildContext co
       PopupMenuItem(
         child: ListTile(
           leading: const Icon(Icons.grid_on),
-          title: const Text('グリッド変更'),
+          title: Text(translations.home.setting_list.grid),
           onTap: () async{
             
             await FirebaseAnalytics.instance.logEvent(
@@ -52,7 +55,7 @@ void showBookmarkSettings(WidgetRef ref, TapDownDetails details, BuildContext co
       PopupMenuItem(
         child: ListTile(
           leading: const Icon(Icons.sort),
-          title: const Text('ソート'),
+          title: Text(translations.home.setting_list.sort),
           onTap: () async{
             //ここでdialogを出して、縦横比とグリッド数を変更させる。
 
@@ -103,6 +106,8 @@ void showBookmarkSettingsWithTags(WidgetRef ref, TapDownDetails details, BuildCo
   final position = details.globalPosition;
   final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
 
+  final translocations = Translations.of(context);
+
   final RelativeRect positionPopup = RelativeRect.fromLTRB(
     position.dx,
     position.dy,
@@ -118,7 +123,7 @@ void showBookmarkSettingsWithTags(WidgetRef ref, TapDownDetails details, BuildCo
       PopupMenuItem(
         child: ListTile(
           leading: const Icon(Icons.grid_on),
-          title: const Text('グリッド変更'),
+          title: Text(translocations.home.setting_list.grid),
           onTap: () async{
 
             Navigator.of(context).pop();
@@ -133,7 +138,7 @@ void showBookmarkSettingsWithTags(WidgetRef ref, TapDownDetails details, BuildCo
       PopupMenuItem(
         child: ListTile(
           leading: const Icon(Icons.sort),
-          title: const Text('ソート変更'),
+          title: Text(translocations.home.setting_list.sort),
           onTap: () async{
             //ここでdialogを出して、縦横比とグリッド数を変更させる。
 
@@ -147,19 +152,7 @@ void showBookmarkSettingsWithTags(WidgetRef ref, TapDownDetails details, BuildCo
 
 
 
-      /*
-      PopupMenuItem(
-        child: ListTile(
-          leading: const Icon(Icons.help),
-          title: const Text('ヘルプ'),
-          onTap: () {
 
-            Navigator.of(context).pop();
-
-          },
-        ),
-      ),
-       */
     ],
   );
 }

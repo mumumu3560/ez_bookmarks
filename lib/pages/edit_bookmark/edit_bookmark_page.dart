@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
+import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/pages/edit_bookmark/components/almost_logic/almost_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:ez_bookmarks/database/drift/database_1/database.dart';
@@ -111,12 +112,14 @@ class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
   // Fileが実際に存在するかチェック
   final fileExists = file.existsSync();
 
+  final translations = Translations.of(context);  
+
 
 
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('編集'),
+        title: Text(translations.edit_bookmarks.title),
         actions: [
           ElevatedButton(
             onPressed: (){
@@ -132,7 +135,7 @@ class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
               );
             
             },
-            child: const Text('完了'),
+            child: Text(translations.edit_bookmarks.complete),
           ),
 
           /*
@@ -177,7 +180,7 @@ class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
                       //3行まで
                       maxLines: 3,
                       controller: _contentsController,
-                      decoration: const InputDecoration(labelText: '説明'),
+                      decoration: InputDecoration(labelText: translations.edit_bookmarks.explain),
                     ),
               
               
@@ -193,7 +196,7 @@ class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
               
                     ElevatedButton(
                       onPressed: _selectImage,
-                      child: const Text('画像を選択'),
+                      child: Text(translations.edit_bookmarks.select_image),
                     ),
               
                     //画像を表示
@@ -214,7 +217,7 @@ class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
                     TextFormField(
                       controller: _tagController,
                       decoration: InputDecoration(
-                        labelText: 'タグを入力',
+                        labelText: translations.edit_bookmarks.input,
                         /*
                         
                          */
@@ -230,7 +233,7 @@ class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
               
                     SizedBox(height: SizeConfig.blockSizeVertical! * 2,),
               
-                    const Text("選択したタグ"),
+                    Text(translations.edit_bookmarks.tag_show),
               
                     Wrap(
                       //mainaxisの間隔
@@ -250,7 +253,7 @@ class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
               
                     SizedBox(height: SizeConfig.blockSizeVertical! * 2,),
               
-                    const Text("すでに存在するタグ一覧"),
+                    Text(translations.edit_bookmarks.exist_tag),
               
                     FutureBuilder<Map<String, List<Tag>>>(
                       //future: getTagsByGenre(ref),

@@ -1,4 +1,5 @@
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
+import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/pages/database_management/components/almost_logic/almost_logic.dart';
 import 'package:ez_bookmarks/pages/database_management/components/almost_view/dialogs.dart';
 import 'package:ez_bookmarks/riverpod/db_switcher/db_switcher.dart';
@@ -16,10 +17,11 @@ class DatabaseManagementPage extends ConsumerWidget {
 Widget build(BuildContext context, WidgetRef ref) {
 
   final dbSwitcher = ref.watch(dbSwitcherNotifierProvider);
+  final translations = Translations.of(context);
 
   return Scaffold(
     appBar: AppBar(
-      title: const Text('データベース管理'),
+      title: Text(translations.import_export.title),
     ),
     body: Column(
       children: [
@@ -35,7 +37,7 @@ Widget build(BuildContext context, WidgetRef ref) {
                   Row(
                     children: [
                       Text(
-                        'インポートについて',
+                        translations.import_export.import,
                         style: Theme.of(context).textTheme.titleLarge
                       ),
             
@@ -54,14 +56,14 @@ Widget build(BuildContext context, WidgetRef ref) {
                       importDatabase(ref,context, dbSwitcher); 
                     } ,
 
-                    child: const Text("インポートする")
+                    child: Text(translations.import_export.import_button)
                   ),
             
             
                   Row(
                     children: [
                       Text(
-                        'バックアップについて',
+                        translations.import_export.export,
                         style: Theme.of(context).textTheme.titleLarge
                       ),
                       IconButton(
@@ -75,10 +77,22 @@ Widget build(BuildContext context, WidgetRef ref) {
                   ),
             
                   ElevatedButton(
-                    onPressed: (){
+                    onPressed: () async{
+                      //まず確認ダイアログを出し、その結果でバックアップを行う
+
+                      bool result = await showConfirmBackUpDialog(context);
+
+                      if(!result){
+                        return;
+                      }
+
+
+                      if(!context.mounted) return;
+
                       backupDatabase(ref,context, dbSwitcher);
+                      
                     }, 
-                    child: const Text("バックアップする")
+                    child: Text(translations.import_export.export_button)
                   ),
             
                 ],

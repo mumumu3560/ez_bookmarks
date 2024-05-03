@@ -1,5 +1,6 @@
 
 import 'package:drift/native.dart';
+import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:ez_bookmarks/database/drift/database_1/database.dart';
@@ -32,21 +33,26 @@ Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
 
 
 // ブックマークを追加するメソッド（具体的なロジックは省略）
-  Future<void> addBookmark(WidgetRef ref, BuildContext context, String contents, String url, List<String> tags, String? imagePath) async {
+  Future<bool> addBookmark(WidgetRef ref, BuildContext context, String contents, String url, List<String> tags, String? imagePath) async {
+
+    final translocations = Translations.of(context);
+
+    final unexpectedErrorMessage = translocations.utils.unexpected;
 
     try{
       if(url == ""){
-        context.showErrorSnackBar(message: "URLを入力してください。");
-        return;
+        //context.showErrorSnackBar(message: "URLを入力してください。");
+        context.showErrorSnackBar(message: translocations.add_bookmarks.snackbar.url_confirm);
+        return false;
       }
 
       final bool isExistUrl = await ref.watch(dbAdminNotifierProvider).checkBookmarkWithUrl(url);
 
       if(isExistUrl){
         if(context.mounted){
-          context.showErrorSnackBar(message: "同じURLのブックマークが既に存在します。");
+          context.showErrorSnackBar(message: translocations.add_bookmarks.snackbar.existing_confirm);
         }
-        return;
+        return false;
       }
 
 
@@ -65,16 +71,22 @@ Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
 
 
       //await myDatabase.insertOrUpdateGenreColor(tagId!, "分類なし", true); // ジャンルは適宜設定または選択させる
-      await ref.watch(dbAdminNotifierProvider).insertOrUpdateGenreColor(tagId!, "分類なし", true); // ジャンルは適宜設定または選択させる
+      //await ref.watch(dbAdminNotifierProvider).insertOrUpdateGenreColor(tagId!, translocations.add_bookmarks.on_insert.genre, true); // ジャンルは適宜設定または選択させる
 
+      //内部での動作は、「分類なし」にしておいて、表示の際に分類なしとあるものをtranslocations.add_bookmarks.on_insert.genreのものにする。
+      await ref.watch(dbAdminNotifierProvider).insertOrUpdateGenreColor(tagId!, "分類なし", true); // ジャンルは適宜設定または選択させる
     }
+
+    return true;
       
 
     } on SqliteException {
       //if(mounted) context.showErrorSnackBar(message: e.toString());
-      if(context.mounted) context.showErrorSnackBar(message: "同じURLのブックマークが既に存在します。");
+      if(context.mounted) context.showErrorSnackBar(message: translocations.add_bookmarks.snackbar.existing_confirm);
+      return false;
     } catch (e) {
       if(context.mounted) context.showErrorSnackBar(message: unexpectedErrorMessage);
+      return false;
     }
   }
 

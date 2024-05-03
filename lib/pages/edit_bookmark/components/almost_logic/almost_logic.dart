@@ -1,5 +1,6 @@
 
 import 'package:drift/native.dart';
+import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:ez_bookmarks/database/drift/database_1/database.dart';
@@ -38,9 +39,12 @@ Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
   void editBookmark(WidgetRef ref,  BuildContext context, String contents, String existedUrl,String url, List<String> tags, String? imagePath, int bookmarkId) async {
 
     final dbAd = ref.watch(dbAdminNotifierProvider);
+    final translations = Translations.of(context);
+
+    final unexpectedErrorMessage = translations.utils.unexpected;
     try{
       if(url == ""){
-        context.showErrorSnackBar(message: "URLを入力してください。");
+        context.showErrorSnackBar(message: translations.edit_bookmarks.snackbar.url_confirm);
         return;
       }
 
@@ -49,7 +53,7 @@ Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
 
       if(isExistUrl && existedUrl != url){
         if(context.mounted){
-          context.showErrorSnackBar(message: "同じURLのブックマークが既に存在します。");
+          context.showErrorSnackBar(message: translations.edit_bookmarks.snackbar.existing_confirm);
         }
         return;
       }
@@ -68,7 +72,13 @@ Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
       //final tagId = await myDatabase.getTagIdByName(tagName);
       final tagId = await dbAd.getTagIdByName(tagName);
       //await myDatabase.insertOrUpdateGenreColor(tagId!, "分類なし", false); // ジャンルは適宜設定または選択させる
-      await dbAd.insertOrUpdateGenreColor(tagId!, "分類なし", false); // ジャンルは適宜設定または選択させる
+      
+      //ここは多言語化でadd_bookmarkのon_insertを使う。
+      //await dbAd.insertOrUpdateGenreColor(tagId!, "分類なし", false); 
+      
+      //await dbAd.insertOrUpdateGenreColor(tagId!, translations.add_bookmarks.on_insert.genre, false); // ジャンルは適宜設定または選択させる
+    
+      await dbAd.insertOrUpdateGenreColor(tagId!, "分類なし", false); 
     }
       
 
@@ -79,7 +89,7 @@ Future<Map<String, List<Tag>>> getTagsByGenre(WidgetRef ref) async {
 
     } on SqliteException {
       //if(mounted) context.showErrorSnackBar(message: e.toString());
-      if(context.mounted) context.showErrorSnackBar(message: "同じURLのブックマークが既に存在します。");
+      if(context.mounted) context.showErrorSnackBar(message: translations.edit_bookmarks.snackbar.existing_confirm);
     } catch (e) {
       if(context.mounted) context.showErrorSnackBar(message: unexpectedErrorMessage);
     }

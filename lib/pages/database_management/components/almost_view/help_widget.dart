@@ -23,12 +23,15 @@ class HelpPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          //min
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Center(child: Text(content, style: TextStyle(fontSize: 16))),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            //min
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              //Center(child: Text(content, style: TextStyle(fontSize: 16))),
+              Text(content, style: TextStyle(fontSize: 16)),
+            ],
+          ),
         ),
       ),
     );

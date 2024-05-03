@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/pages/database_management/database_management_page.dart';
 import 'package:ez_bookmarks/pages/search/search_page.dart';
 import 'package:ez_bookmarks/pages/setting/setting_page.dart';
@@ -25,6 +26,8 @@ class CustomDrawer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dbName = ref.watch(dbSwitcherNotifierProvider);
 
+    final translations = Translations.of(context);
+
     return Drawer(
       child: ListView(
         children: [
@@ -42,7 +45,7 @@ class CustomDrawer extends ConsumerWidget {
             ),
           ),
           ListTile(
-            title: const Text('タグから検索&編集'),
+            title: Text(translations.drawer.tags),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => SearchPage(),
@@ -50,7 +53,7 @@ class CustomDrawer extends ConsumerWidget {
             },
           ),
           ListTile(
-            title: const Text('インポートとバックアップ'),
+            title: Text(translations.drawer.management),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const DatabaseManagementPage(),
@@ -61,7 +64,7 @@ class CustomDrawer extends ConsumerWidget {
           //設定ページを開く
 
           ListTile(
-            title: const Text('設定'),
+            title: Text(translations.drawer.settings),
             onTap: () {
 
               Navigator.of(context).push(MaterialPageRoute(
@@ -72,10 +75,11 @@ class CustomDrawer extends ConsumerWidget {
 
 
           ListTile(
-            title: const Text('お問い合わせ'),
+            title: Text(translations.drawer.inquiry),
             onTap: () async {
               if(Platform.isAndroid){
-                  const String url = "https://forms.gle/KkHYp3keoW5iepQN9";
+                  //String url = "https://forms.gle/KkHYp3keoW5iepQN9";
+                  String url = translations.external_url.inquiry;
                   if(await canLaunchUrl(Uri.parse(url))){
                     await launchUrl(Uri.parse(url));
                   }
@@ -86,9 +90,10 @@ class CustomDrawer extends ConsumerWidget {
 
                 }
 
-                const String url = "https://forms.gle/psbfDJXdyDfa2tb97";
+                
 
                 if(Platform.isWindows){
+                  String url = translations.external_url.inquiry;
                   if(await canLaunchUrl(Uri.parse(url))){
                     await launchUrl(Uri.parse(url));
                   }

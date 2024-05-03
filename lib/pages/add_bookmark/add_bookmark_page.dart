@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
+import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/pages/add_bookmark/components/almost_logic/almost_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:ez_bookmarks/database/drift/database_1/database.dart';
@@ -94,36 +95,42 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
   @override
   Widget build(BuildContext context) {
 
+  
+
     // Fileオブジェクトを作成
-  final file = File(imagePath ?? '');
+    final file = File(imagePath ?? '');
 
-  // Fileが実際に存在するかチェック
-  final fileExists = file.existsSync();
+    // Fileが実際に存在するかチェック
+    final fileExists = file.existsSync();
 
+    //言語設定
+    final translations = Translations.of(context);
+    
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text('追加'),
+        title: Text(translations.add_bookmarks.title),
         actions: [
           ElevatedButton(
               onPressed: () async{
-                await addBookmark(ref, context, _contentsController.text, _urlController.text, tags, imagePath);
+                final bool isOk = await addBookmark(ref, context, _contentsController.text, _urlController.text, tags, imagePath);
                 if(_urlController.text.isEmpty) return;
+                if(!isOk) return;
                 
                 if(context.mounted){
                   showDialog(
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: const Text("完了"),
-                        content: const Text("ブックマークが追加されました。\n リロードしてください。。"),
+                        title: Text(translations.add_bookmarks.complete_dialog.title),
+                        content: Text(translations.add_bookmarks.complete_dialog.text),
                         actions: [
                           ElevatedButton(
                             onPressed: () {
                               Navigator.pop(context);
                               Navigator.pop(context);
                             },
-                            child: const Text("閉じる"),
+                            child: Text(translations.add_bookmarks.complete_dialog.close),
                           ),
                         ],
                       );
@@ -133,36 +140,8 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
                 
               
               },
-              child: const Text('完了'),
+              child: Text(translations.add_bookmarks.complete),
             ),
-
-          
-          /*
-          IconButton(
-            //helpマーク
-            icon: const Icon(Icons.help),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text("ヘルプ"),
-                    content: const Text("ブックマークの編集画面です。"),
-                    actions: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text("閉じる"),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-
-          ),
-           */
         ],
       ),
       body: Column(
@@ -178,7 +157,7 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
                       //3行のテキストフィールド
                       maxLines: 3,
                       controller: _contentsController,
-                      decoration: const InputDecoration(labelText: '説明'),
+                      decoration: InputDecoration(labelText: translations.add_bookmarks.explain),
                     ),
                           
                           
@@ -193,7 +172,7 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
               
               ElevatedButton(
                 onPressed: _selectImage,
-                child: const Text('画像を選択'),
+                child: Text(translations.add_bookmarks.select_image),
               ),
               
               //画像を表示
@@ -213,7 +192,7 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
                     TextFormField(
                       controller: _tagController,
                       decoration: InputDecoration(
-                        labelText: 'タグを入力',
+                        labelText: translations.add_bookmarks.input,
                         /*
                         
                          */
@@ -228,7 +207,7 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
                           
                     SizedBox(height: SizeConfig.blockSizeVertical! * 2,),
                           
-                    const Text("ブックマークに追加するタグ"),
+                    Text(translations.add_bookmarks.tag_show),
                           
                     SizedBox(height: SizeConfig.blockSizeVertical! * 2,),
                           
@@ -242,7 +221,7 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
                           
                     SizedBox(height: SizeConfig.blockSizeVertical! * 2,),
                           
-                    const Text("すでに存在するタグ一覧"),
+                    Text(translations.add_bookmarks.exist_tag),
                           
                     
                     FutureBuilder<Map<String, List<Tag>>>(

@@ -13,7 +13,7 @@ import 'package:html/parser.dart' show parse;
 //ここではブックマークが含むタグをreturn
 Future<int> calcContainBookmarks(WidgetRef ref, List<Tag> tags, String sortBy, bool isDesc) async{
   //final filterdList = await myDatabase.findBookmarksContainingAllTags(tags, sortBy, isDesc);
-  final filterdList = await ref.watch(dbAdminNotifierProvider).findBookmarksContainingAllTags(tags, sortBy, isDesc);
+  final filterdList = await ref.read(dbAdminNotifierProvider).findBookmarksContainingAllTags(tags, sortBy, isDesc);
   return filterdList.length;
 }
 
@@ -26,13 +26,13 @@ String formatCreatedAt(DateTime createdAt) {
   Duration difference = now.difference(createdAt);
 
   if (difference.inMinutes < 60) {
-    return '${difference.inMinutes}分前';
+    return '${difference.inMinutes}m';
   } else if (difference.inHours < 24) {
-    return '${difference.inHours}時間前';
+    return '${difference.inHours}hour';
   } else if (difference.inDays < 365) {
-    return '${createdAt.month}月${createdAt.day}日';
+    return '${createdAt.month}/${createdAt.day}';
   } else {
-    return '${createdAt.year}年${createdAt.month}月${createdAt.day}日';
+    return '${createdAt.year}/${createdAt.month}/${createdAt.day}';
   }
 }
 
@@ -54,6 +54,7 @@ Future<Map<int,List<int>>> calcSums (WidgetRef ref,  BuildContext context, Bookm
 
     final List<Tag> updatedTags = List.from(tags ?? []);
     updatedTags.add(tag);
+
 
     final tagSum = await calcContainBookmarks(ref, updatedTags, sortBy, isDesc);
     tagSums.add(tagSum);
