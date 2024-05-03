@@ -1,0 +1,274 @@
+{
+    "home": {
+        "title_with_tags": "選択したタグ",
+
+        "selected_tags_dialog":{
+            "title": "選択したタグ",
+            "close": "閉じる"
+        },
+
+        "setting_list":{
+            "grid": "グリッド変更",
+            "sort": "ソート",
+
+            "grid_dialog":{
+                "title": "グリッド変更",
+                "close": "閉じる",
+
+                "grid_num": "グリッド数",
+                "init_num": "初期値",
+                "now_num": "現在のグリッド数"
+
+            },
+
+            "sort_dialog":{
+
+                "title": "ソート変更",
+                "descending": "降順",
+                "close": "閉じる",
+
+                "sort_list":{
+                    "created": "作成日時順",
+                    "updated": "更新日時順",
+                    "tag": "Tag",
+                    "genre": "Genre",
+                    "random": "Random"
+                }
+
+            }
+        }
+        
+    },
+
+    "bookmark_card": {
+
+        "setting_list":{
+
+            "explain": "説明",
+            "show_tags": "タグ表示",
+            "edit": "編集",
+            "delete": "削除",
+
+            "expain_dialog": {
+                "title": "説明",
+                "close": "閉じる"
+            },
+
+            "tag_dialog":{
+                "title": "タグ一覧",
+                "close": "Close",
+                "search": "And検索",
+                "and_search": {
+                    "title": "And検索とは？",
+                    "close": "閉じる",
+                    "text": "あなたが今選択したタグと、既に選択したタグ(左上から見られます)全てを含むブックマークを検索できます。"
+                }
+            },
+
+            "delete_dialog": {
+                "title": "削除確認",
+                "confirm": "本当に削除しますか？",
+                "delete": "削除",
+                "cancel": "キャンセル",
+
+                "snackbar": {
+                    "delete": "削除されました。"
+                }
+            }
+
+            
+
+        }        
+    },
+
+    "drawer": {
+        "tags": "タグから検索&編集",
+        "management": "インポートとバックアップ",
+        "settings": "設定",
+        "inquiry": "お問い合わせ"
+    },
+
+
+    "add_bookmarks":{
+        "title": "追加",
+        "complete": "完了",
+        "explain": "せつめい",
+        "url": "URL",
+        "input": "タグを入力",
+        "select_image": "画像を選択",
+        "tag_show": "ブックマークに追加するタグ",
+        "exist_tag": "既に存在するタグ一覧",
+
+        "complete_dialog": {
+            "title": "完了",
+            "text": "ブックマークが追加されました。\nリロードしてください。",
+            "close": "閉じる"
+        },
+
+        "snackbar": {
+            "url_confirm": "URLを入力してください。",
+            "existing_confirm": "既に登録されているURLです。"
+
+
+        },
+
+        "on_insert":{
+            "genre": "分類なし"
+        }
+
+
+    },
+
+
+
+    "edit_bookmarks":{
+        "title": "編集",
+        "complete": "完了",
+        "explain": "せつめい",
+        "url": "URL",
+        "input": "タグを入力",
+        "select_image": "画像を選択",
+        "tag_show": "選択したタグ",
+        "exist_tag": "既に存在するタグ一覧",
+
+
+        "snackbar": {
+            "url_confirm": "URLを入力してください。",
+            "existing_confirm": "既に登録されているURLです。"
+
+        }
+
+    },
+
+    "import_export":{
+        "title": "データベース管理",
+        "import": "インポートについて",
+        "export": "バックアップについて",
+
+        "import_button": "インポート",
+        "export_button": "バックアップ",
+
+        "import_dialog":{
+            "page_1": {
+                "title": "上書き",
+                "text": "インポートすると、現在のデータベースが上書きされます。\n\nインポート前に確認を行ってください。"
+            },
+
+            "page_2": {
+                "title": "サムネイル",
+                "text": "表示されるサムネイルは端末の画像があるパスを参照しています。\n\n端末を変えたり、画像を端末から削除したりしてしまうとサムネイルが表示できなくなります。"
+            }
+        },
+
+        "backup_dialog":{
+            "page_1": {
+                "title": "ファイル名",
+                "text": "バックアップファイルはclassifier_database(1,2,3)_backup.sqlite\nという名前でダウンローどフォルダに保存されます。"
+            },
+
+            "page_2": {
+                "title": "注意",
+                "text": "保存されるファイルの名前は\ndatabase1_backup1\ndatabase1_backup2\nのようになります。\n\nバックアップを取り続けると容量が圧迫されます。ダウンロードフォルダの整理を忘れないようにしてください。"
+            }
+        },
+
+
+        "back_up_confirm_dialog":{
+            "title": "確認",
+            "text": "バックアップを行いますか？",
+            "yes": "はい",
+            "no": "いいえ"
+        },
+
+        "on_import": {
+            "complete": "データベースがインポートされました"
+        },
+
+        "on_backup": {
+            "complete": "データベースがバックアップされました"
+        }
+
+
+
+
+    },
+
+    "settings":{
+        "title": "設定",
+        "privacy_policy": "プライバシーポリシー",
+        "change_theme": "テーマ切り替え",
+        "change_database": "データベースの切り替え",
+        "current_database": "現在のデータベース",
+
+        "database_dialog":{
+            "title": "確認",
+            "text": "データベースを切り替えますか？\n(3回に1回広告が表示されます)",
+            "yes": "はい",
+            "no": "いいえ"
+        },
+
+        "loading_dialog": "読み込み中...",
+
+        "on_change_database": {
+            "complete": "完了",
+            "text": "データベースが切り替わりました。",
+            "ok": "OK"
+        }
+    },
+
+    "search": {
+        "title": "タグ編集&検索",
+        "found": "件のブックマークが見つかりました",
+        "search_button": "検索",
+        "clear_button": "クリア",
+        "change_genre": "ジャンル変更",
+
+        "search_dialog": {
+            "page_1":{
+                "title": "ページについて",
+                "text": "このページではタグからブックマークを検索したり、タグのジャンルを変更することができます。"
+            },
+
+            "page_2": {
+                "title": "検索について",
+                "text": "ブックマークに登録されたタグ一覧を下から選んで検索できます。\n\nタグは複数選択できます。"
+            },
+
+            "page_3": {
+                "title": "ジャンルについて",
+                "text":"ジャンルはタグを分類したもので、デフォルトは「分類なし」となっています。\n\nタグを選択し、ジャンルを変更することができます。"
+            }
+        },
+
+        "genre_dialog": {
+            "title": "Edit Genre",
+            "cancel": "Cancel",
+            "save": "Save",
+
+            "form": "Genre Name"
+        }
+
+    },
+
+    "database":{
+        "no_genre": "分類なし"
+    },
+
+    "external_url":{
+        "privacy_policy": "https://ez-bookmarks.pages.dev/ja/privacy-policy",
+        "inquiry": "https://forms.gle/KkHYp3keoW5iepQN9"
+    },
+
+    "utils":{
+        "unexpected": "予期せぬエラーが発生しました。",
+        "loading": "処理中です。"
+    },
+
+
+    
+
+    "locales(map)": {
+        "en": "英語",
+        "ja": "日本語"
+    }
+}
