@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/db_switcher/db_switcher.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +13,35 @@ import 'package:external_path/external_path.dart';
 import 'dart:typed_data';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:intl/intl.dart';
+
+
+
+
+
+
+
+
+
+Future<String> generateSequentialBackupFileName(String basePath, String dbName) async {
+  int index = 1;
+  while (true) {
+    String fileName = p.join(basePath, '${dbName}_backup${index}.sqlite');
+    if (!await File(fileName).exists()) {
+      return fileName; // 存在しないファイル名が見つかったらそれを返す
+    }
+    index++;
+  }
+}
+
+
 
 
 Future<void> backupDatabase(WidgetRef ref, BuildContext context, String dbName) async {
     String? path;
+
+    if(!context.mounted) return;
+    final translocations = Translations.of(context);
 
     if(Platform.isWindows){
       path = await FilePicker.platform.saveFile(
@@ -26,64 +52,89 @@ Future<void> backupDatabase(WidgetRef ref, BuildContext context, String dbName) 
     }
 
     if(Platform.isAndroid){
+      final String basePath = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS);
+      path = await generateSequentialBackupFileName(basePath, dbName);
+    }
 
-      path = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS);
-      //path = p.join(path, 'ezb_backup.sqlite');
-      path = p.join(path, '${dbName}_backup.sqlite');
-
+    if(path == null){
+      return;
     }
 
 
-    if (path != null) {
-      final File file = File(path);
+    final File file = File(path);
+    await file.create(recursive: true); // ファイル作成
 
-      if ((await file.exists())) {
-        if(!context.mounted){
-          return;
-        }
-        final bool shouldOverwrite = await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('確認'),
-            content: Text('ファイル "$path" は既に存在します。上書きしますか？'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('キャンセル'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text('上書き'),
-              ),
-            ],
-          ),
-        ) ?? false;
-
-        if (!shouldOverwrite) {
-          return;
-        }
-        await file.delete();
-
-      }
-
-      final dbAd = ref.watch(dbAdminNotifierProvider);
-
-      // データベースのバックアップを新しいファイルに作成
-      //await myDatabase.backupDatabase(path);
+      final dbAd = ref.read(dbAdminNotifierProvider);
 
       await dbAd.backupDatabase(path);
 
 
       if(context.mounted){
-        context.showSuccessSnackBar(message: 'データベースがバックアップされました');
+        context.showSuccessSnackBar(message: '${translocations.import_export.on_backup.complete} $file');
       }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+Future<String> generateTimestampBackupFileName(String basePath, String dbName) async {
+  String timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
+  return p.join(basePath, '${dbName}_backup_$timestamp.sqlite');
+}
+
+Future<void> backupDatabaseWithTimestamp(BuildContext context, WidgetRef ref, String dbName) async {
+  final String basePath = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS);
+  final String path = await generateTimestampBackupFileName(basePath, dbName);
+
+  if(!context.mounted) return;
+
+  final translocations = Translations.of(context);
+
+  final File file = File(path);
+  await file.create(recursive: true); // ファイル作成
+
+  final dbAd = ref.read(dbAdminNotifierProvider);
+  await dbAd.backupDatabase(path);
+
+  if (context.mounted) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${translocations.import_export.on_backup.complete}: $path')));
   }
+}
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
 
 
   // データベースのインポート
   //dbNameで指定されたデータベースにインポートする
   Future<void> importDatabase(WidgetRef ref,  BuildContext context,  String dbName) async {
+
+    final translocations = Translations.of(context);
+
     final FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null && result.files.single.path != null) {
       final String path = result.files.single.path!;
@@ -111,28 +162,8 @@ Future<void> backupDatabase(WidgetRef ref, BuildContext context, String dbName) 
       await dbAdNotifier.updateDB(nowDbName);
 
       if(context.mounted){
-        context.showSuccessSnackBar(message: 'データベースがインポートされました');
+        context.showSuccessSnackBar(message: '${translocations.import_export.on_import.complete}');
       }
       // 必要に応じてアプリケーションの再起動やデータベースの再読み込みする
     }
   }
-
-
-
-
-
-
-  /*
-  
-  // 新しいデータベースファイルで現在のデータベースを置き換える
-  Future<void> importDatabase(String newPath, String dbName) async {
-
-    await myDatabase.close(); // 最初にデータベース接続を閉じる
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, '$dbName.sqlite'));
-
-    await file.delete();
-    await File(newPath).copy(file.path);
-    // データベースの再接続や初期化が必要な場合はここで実行
-  }
-   */
