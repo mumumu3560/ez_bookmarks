@@ -3,8 +3,10 @@ import 'package:ez_bookmarks/env/env.dart';
 import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/bookmark_list_page.dart';
 import 'package:ez_bookmarks/pages/setting/components/almost_logic/almost_logic.dart';
+import 'package:ez_bookmarks/pages/setting/components/language_page/language_page.dart';
 import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/db_switcher/db_switcher.dart';
+import 'package:ez_bookmarks/riverpod/gdpr/judge_in_gdpr/gdpr_jud.dart';
 import 'package:ez_bookmarks/riverpod/interstitial/count/interstitial_count_notifier.dart';
 import 'package:ez_bookmarks/riverpod/interstitial/interstitial_ad_notifier.dart';
 import 'package:ez_bookmarks/riverpod/local/language.dart';
@@ -14,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+//GDPR
+import 'package:async_preferences/async_preferences.dart';
 
 
 
@@ -40,6 +44,7 @@ class SettingPage extends ConsumerWidget {
 
   static final String adUnitId = Env.i1;
 
+
   
 
   @override
@@ -56,6 +61,7 @@ class SettingPage extends ConsumerWidget {
 
     final translations = Translations.of(context);
 
+    final gdpr = ref.watch(gdprJudgeNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -85,6 +91,19 @@ class SettingPage extends ConsumerWidget {
             
                   }
                 ),
+
+                //ここにGDPRの同意画面を表示する
+                gdpr == true
+                ? ListTile(
+                  title: Text("GDPR"),
+                  onTap: () async {
+
+                    await changePrivacyPreferences();
+
+                  },
+                )
+                : Container(),
+
                 ListTile(
                   title: Row(
                     children: [
@@ -98,19 +117,16 @@ class SettingPage extends ConsumerWidget {
                             
                             if (thisTheme == 0) {
                               await themeNotifier.updateState(1);
-                              //myDatabase.updateTheme(1);
                               await dbAdmin.updateTheme(1);
 
                             } else if(thisTheme == 1){
                               await themeNotifier.updateState(0);
-                              //myDatabase.updateTheme(0);
                               await dbAdmin.updateTheme(0);
                             }
                             else{
                               await dbAdmin.insertTheme();
 
                               await themeNotifier.updateState(1);
-                              //myDatabase.updateTheme(0);
                               await dbAdmin.updateTheme(1);
                             }
 
@@ -134,18 +150,15 @@ class SettingPage extends ConsumerWidget {
             
                     if (thisTheme == 0) {
                       themeNotifier.updateState(1);
-                      //myDatabase.updateTheme(1);
                       dbAdmin.updateTheme(1);
 
                     } else if(thisTheme == 1){
                       themeNotifier.updateState(0);
-                      //myDatabase.updateTheme(0);
                       dbAdmin.updateTheme(0);
                     }
                     else{
                       dbAdmin.insertTheme();
                       themeNotifier.updateState(1);
-                      //myDatabase.updateTheme(0);
                       dbAdmin.updateTheme(1);
                     }
 
@@ -159,13 +172,23 @@ class SettingPage extends ConsumerWidget {
 
                 ListTile(
                   //言語切り替え
-                  //title: Text(translations.settings.),
+                  title: Text(translations.settings.language),
                   onTap: () async {
+
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const LanguagePage(), // ImageDisplayに遷移
+                      ),
+                    );
+                    
+                    
+                    /*
                     final languageNotifier = ref.read(languageNotifierProvider.notifier);
                     final currentLocale = ref.read(languageNotifierProvider);
 
                     final newLocale = currentLocale == AppLocale.ja ? AppLocale.en : AppLocale.ja;
                     languageNotifier.updateLocale(newLocale);
+                     */
                   },
                 ),
             
@@ -174,7 +197,6 @@ class SettingPage extends ConsumerWidget {
                   title: Text(translations.settings.change_database),
                   subtitle: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //幅を指定
 
                     children: dbMap.entries.map((entry) {
                       return ElevatedButton(
@@ -298,6 +320,9 @@ class SettingPage extends ConsumerWidget {
             height: SizeConfig.blockSizeVertical! * 10,
             color: Colors.white,
             //TODO Admob
+            /*
+            
+             */
             child: InlineAdaptiveAdBanner(
               requestId: "SETTING", 
               adHeight: SizeConfig.blockSizeVertical!.toInt() * 10,
