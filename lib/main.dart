@@ -1,6 +1,7 @@
 
 import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/bookmark_list_page.dart';
+import 'package:ez_bookmarks/pages/home/home_page.dart';
 import 'package:ez_bookmarks/riverpod/local/language.dart';
 import 'package:ez_bookmarks/riverpod/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
@@ -16,16 +17,32 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:ez_bookmarks/firebase_options.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import 'package:async_preferences/async_preferences.dart';
+
+
+
+
+
+
+
+
+
+
+
 Future<void> main() async {
+
+
+  
   WidgetsFlutterBinding.ensureInitialized();
 
-  MobileAds.instance.initialize();
+  //await ConsentInformation.instance.reset();
+
+
   LocaleSettings.useDeviceLocale();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   
 
 
@@ -42,6 +59,7 @@ Future<void> main() async {
     )
   );
 }
+
 
 class MyApp extends ConsumerWidget {
   const MyApp({
@@ -101,7 +119,8 @@ class MyApp extends ConsumerWidget {
       ),
 
       
-      home: const BookMarkList(tags: null),
+      //home: const BookMarkList(tags: null),
+      home: const HomePage(),
     );
   }
 }
