@@ -7,17 +7,15 @@ class DbSwitcherNotifier extends _$DbSwitcherNotifier{
 
   @override
   String build() {
-    //最初はez_databaseを返す。
-    String db = "ez_database";
+    //最初はclassifier_databaseを返す。
+    String db = "classifier_database1";
     return db;
   }
 
   //ここでdb変更。
-  //ez_database、ez_database_1、ez_database_2のいずれかを引数に取る。
+  //classifier_database、classifier_database_1、classifier_database_2のいずれかを引数に取る。
   void updateState(String db) {
-    print("変更前のstate: $state");
     state = db;
-    print("変更後のstate: $state");
   }
 
 

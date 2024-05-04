@@ -1,0 +1,272 @@
+{
+    "home": {
+        "title_with_tags": "Etiquetas selecionadas",
+        "selected_tags_dialog":{
+            "title": "etiquetas selecionadas",
+            "close": "Fechar"
+        },
+
+        "setting_list":{
+            "grid": "Alterar grade",
+            "sort": "Ordenar",
+
+            "grid_dialog":{
+                "title": "Alterar grade",
+                "close": "Fechar",
+
+                "grid_num": "Número da grade",
+                "init_num": "inicial",
+                "now_num": "atual"
+
+            },
+
+            "sort_dialog":{
+                "title": "Alterar ordenação",
+                "descending": "Descendente",
+                "close": "Fechar",
+
+                "sort_list":{
+                    "created": "Criado em",
+                    "updated": "Atualizado em",
+                    "tag": "Tag",
+                    "genre": "Gênero",
+                    "random": "Aleatório"
+                }
+                
+            }
+        }
+    },
+
+    "bookmark_card": {
+
+        "setting_list":{
+
+            "explain": "Explicar",
+            "show_tags": "Mostrar tags",
+            "edit": "Editar",
+            "delete": "Apagar",
+
+            "expain_dialog": {
+                "title": "Explicar",
+                "close": "Fechar"
+            },
+
+            "tag_dialog":{
+                "title": "Tags",
+                "close": "Fechar",
+                "search": "+Pesquisar",
+                "and_search": {
+                    "title": "O que é +Pesquisar?",
+                    "close": "Fechar",
+                    "text": "Você pode pesquisar marcadores que incluem a tag que você selecionou atualmente e todas as tags selecionadas anteriormente (no canto superior esquerdo)."
+                }
+            },
+
+            "delete_dialog": {
+                "title": "Confirmar exclusão",
+                "confirm": "Tem certeza de que deseja apagar?",
+                "delete": "Apagar",
+                "cancel": "Cancelar",
+
+                "snackbar": {
+                    "delete": "Apagado"
+                }
+            }
+
+        }        
+    },
+
+    "drawer": {
+        "tags": "Pesquisar e editar por tags",
+        "management": "Importar e fazer backup",
+        "settings": "Configurações",
+        "inquiry": "Contato"
+    },
+
+
+    "add_bookmarks":{
+        "title": "Adicionar",
+        "complete": "Concluído",
+        "explain": "Explicar",
+        "url": "URL",
+        "input": "Inserir tag",
+        "select_image": "Selecionar imagem",
+        "tag_show": "Tags a serem adicionadas",
+        "exist_tag": "Tags existentes",
+
+        "complete_dialog": {
+            "title": "Completo",
+            "text": "O marcador foi adicionado. Por favor, recarregue.",
+            "close": "Fechar"
+        },
+
+
+        "snackbar": {
+            "url_confirm": "Por favor, insira uma URL.",
+            "existing_confirm": "Já existe um marcador com a mesma URL."
+        },
+
+        "on_insert":{
+            "genre": "Sem categoria"
+        }
+
+        
+    },
+
+
+
+    "edit_bookmarks":{
+        "title": "Editar",
+        "complete": "Concluído",
+        "explain": "Explicar",
+        "url": "URL",
+        "input": "Inserir tag",
+        "select_image": "Selecionar imagem",
+        "tag_show": "Tags a serem adicionadas",
+        "exist_tag": "Tags existentes",
+
+        "snackbar": {
+            "url_confirm": "Por favor, insira uma URL.",
+            "existing_confirm": "Já existe um marcador com a mesma URL."
+
+        }
+
+    },
+
+    "import_export":{
+        "title": "Gerenciamento de banco de dados",
+        "import": "Sobre importação",
+        "export": "Sobre exportação",
+
+        "import_button": "Importar",
+        "export_button": "Exportar",
+
+        "import_dialog":{
+            "page_1": {
+                "title": "Sobrescrever",
+                "text": "Ao importar, o banco de dados atual será sobrescrito. Por favor, confirme antes de importar."
+            },
+
+            "page_2": {
+                "title": "Miniatura",
+                "text": "As miniaturas exibidas referenciam o caminho das imagens no dispositivo. Mudar de dispositivo ou excluir imagens do dispositivo resultará nas miniaturas não sendo capazes de exibir. Por favor, note que se você selecionou uma imagem,..."
+            }
+        },
+
+        
+        "backup_dialog":{
+            "page_1": {
+                "title": "Nome do arquivo",
+                "text": "O arquivo de backup será salvo na pasta de downloads com o nome 'classifier_database(1,2,3)_backup.sqlite'."
+            },
+
+            "page_2": {
+                "title": "Atenção",
+                "text": "Os arquivos serão salvos com nomes como 'database1_backup1', 'database1_backup2' e assim por diante.\n\nContinuar fazendo backups consumirá espaço de armazenamento. Por favor, lembre-se de organizar sua pasta de downloads."
+            }
+        },
+
+        "back_up_confirm_dialog":{
+            "title": "Confirmar",
+            "text": "Tem certeza de que deseja fazer backup do banco de dados?",
+            "yes": "Sim",
+            "no": "Não"
+        },
+
+        "on_import": {
+            "complete": "Importação concluída"
+        },
+
+        "on_backup": {
+            "complete": "Backup concluído"
+        }
+
+
+    },
+
+    "settings":{
+        "title": "Configurações",
+        "privacy_policy": "Política de privacidade",
+        "change_theme": "Alterar tema",
+        "change_database": "Alterar banco de dados",
+        "current_database": "Banco de dados atual",
+
+        "language": "Idioma",
+
+        "database_dialog":{
+            "title": "Confirmar",
+            "text": "Tem certeza de que deseja alterar o banco de dados?(Um anúncio será exibido a cada três vezes.)",
+            "yes": "Sim",
+            "no": "Não"
+        },
+
+        "loading_dialog": "Carregando...",
+
+        "on_change_database": {
+            "complete": "Concluído",
+            "text": "O banco de dados foi alterado.",
+            "ok": "OK"
+        }
+
+        
+    },
+
+    "search": {
+        "title": "Tags",
+        "found": "marcadores encontrados",
+        "search_button": "Pesquisar",
+        "clear_button": "Limpar",
+        "change_genre": "Alterar gênero",
+
+        "search_dialog": {
+            "page_1": {
+                "title": "Sobre esta página",
+                "text": "Nesta página, você pode pesquisar marcadores por tags e alterar o gênero das tags."
+            },
+
+            "page_2": {
+                "title": "Sobre a pesquisa",
+                "text": "Você pode pesquisar marcadores selecionando tags da lista abaixo.\n\nVárias tags podem ser selecionadas."
+            },
+
+            "page_3": {
+                "title": "Sobre gênero",
+                "text": 
+                "O gênero é uma classificação de tags, sendo 'Sem categoria' o padrão.\n\nVocê pode selecionar tags e alterar o gênero."
+            }
+        },
+
+        "genre_dialog": {
+            "title": "Editar gênero",
+            "cancel": "Cancelar",
+            "save": "Salvar",
+
+            "form": "Nome do gênero"
+        }
+
+    },
+
+    "external_url":{
+        "privacy_policy": "https://ez-bookmarks.pages.dev/en/privacy-policy",
+        "inquiry": "https://forms.gle/7FnqbLNPLsCTDM3q7"
+    },
+
+    "database":{
+        "no_genre": "Sem categoria"
+    },
+
+    "utils":{
+        "unexpected": "Erro inesperado ocorreu",
+        "loading": "carregando..."
+    },
+
+    
+    
+
+    "locales(map)": {
+        "en": "English",
+        "ja": "日本語",
+        "es": "Español",
+        "pt": "Português"
+    }
+}

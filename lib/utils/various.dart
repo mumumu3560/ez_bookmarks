@@ -1,16 +1,46 @@
 
-import 'package:ez_bookmarks/drift/database_1/database.dart';
+import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
 
 //https://qiita.com/kokogento/items/87aaf0a0fbc192e51504
 
 //MyDatabase myDatabase = MyDatabase(dbName: "ez_database.sqlite");
 
-
-const unexpectedErrorMessage = '予期せぬエラーが起きました';
-
+//const unexpectedErrorMessage = '予期せぬエラーが起きました';
 
 
+
+// ローディングスピナーを含むダイアログを表示する関数
+void showLoadingDialog(BuildContext context, String message) {
+  final translations = Translations.of(context);
+  showDialog(
+    context: context,
+    barrierDismissible: false, // ユーザーがダイアログ外をタップして閉じられないようにする
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: SizedBox(
+          height: SizeConfig.blockSizeVertical! * 20,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const CircularProgressIndicator(color: Colors.orange),
+                  const SizedBox(width: 20),
+                  Text(message), // ローディング中のメッセージ                
+                ],
+              ),
+
+              SizedBox(height: SizeConfig.blockSizeVertical! * 2),
+        
+              Text(translations.utils.loading),
+        
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
 
 
 extension ShowSnackBar on BuildContext {

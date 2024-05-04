@@ -31,7 +31,6 @@ class _ImageSelectionWidgetState extends State<ImageSelectionWidget> {
         selectedImagePath = file.name; // Webではファイルパスではなくファイル名を表示
       });
       widget.onImageSelected(file); // PlatformFile型に変更
-      print(selectedImagePath!);
     }
   }
 

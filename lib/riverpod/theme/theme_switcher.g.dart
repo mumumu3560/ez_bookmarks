@@ -7,7 +7,7 @@ part of 'theme_switcher.dart';
 // **************************************************************************
 
 String _$themeModeSwitcherNotifierHash() =>
-    r'033e8328b4f88f5eef73cd3ed623a56def973a99';
+    r'c4fe0049d045e83c1bc846f763ad7a5d05852eba';
 
 /// See also [ThemeModeSwitcherNotifier].
 @ProviderFor(ThemeModeSwitcherNotifier)

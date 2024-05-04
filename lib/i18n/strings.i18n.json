@@ -1,0 +1,272 @@
+{
+    "home": {
+        "title_with_tags": "Selected tags",
+        "selected_tags_dialog":{
+            "title": "selected tags",
+            "close": "Close"
+        },
+
+        "setting_list":{
+            "grid": "Change Grid",
+            "sort": "Sort",
+
+            "grid_dialog":{
+                "title": "Change Grid",
+                "close": "Close",
+
+                "grid_num": "Grid Num",
+                "init_num": "initial",
+                "now_num": "now"
+
+            },
+
+            "sort_dialog":{
+                "title": "Change Sort",
+                "descending": "Descending",
+                "close": "Close",
+
+                "sort_list":{
+                    "created": "CreatedAt",
+                    "updated": "UpdatedAt",
+                    "tag": "Tag",
+                    "genre": "Genre",
+                    "random": "Random"
+                }
+                
+            }
+        }
+    },
+
+    "bookmark_card": {
+
+        "setting_list":{
+
+            "explain": "Explain",
+            "show_tags": "Show Tags",
+            "edit": "Edit",
+            "delete": "Delete",
+
+            "expain_dialog": {
+                "title": "Explain",
+                "close": "Close"
+            },
+
+            "tag_dialog":{
+                "title": "Tags",
+                "close": "Close",
+                "search": "+Search",
+                "and_search": {
+                    "title": "What is +Search?",
+                    "close": "Close",
+                    "text": "You can search for bookmarks that include the tag you have currently selected and all previously selected tags (top left)."
+                }
+            },
+
+            "delete_dialog": {
+                "title": "Confirm Delete",
+                "confirm": "Sure to delete?",
+                "delete": "Delete",
+                "cancel": "Cancel",
+
+                "snackbar": {
+                    "delete": "Deleted"
+                }
+            }
+
+        }        
+    },
+
+    "drawer": {
+        "tags": "Search & Edit by Tags",
+        "management": "Import and Backup",
+        "settings": "Settings",
+        "inquiry": "Contact"
+    },
+
+
+    "add_bookmarks":{
+        "title": "Add",
+        "complete": "Done",
+        "explain": "Explain",
+        "url": "URL",
+        "input": "Input Tag",
+        "select_image": "Select Image",
+        "tag_show": "Tags to be added",
+        "exist_tag": "Existing Tags",
+
+        "complete_dialog": {
+            "title": "Complete",
+            "text": "The bookmark has been added. Please reload.",
+            "close": "Close"
+        },
+
+
+        "snackbar": {
+            "url_confirm": "Please enter a URL.",
+            "existing_confirm": "A bookmark with the same URL already exists."
+        },
+
+        "on_insert":{
+            "genre": "Uncategorized"
+        }
+
+        
+    },
+
+
+
+    "edit_bookmarks":{
+        "title": "Edit",
+        "complete": "Done",
+        "explain": "Explain",
+        "url": "URL",
+        "input": "Input Tag",
+        "select_image": "Select Image",
+        "tag_show": "Tags to be added",
+        "exist_tag": "Existing Tags",
+
+        "snackbar": {
+            "url_confirm": "Please enter a URL.",
+            "existing_confirm": "A bookmark with the same URL already exists."
+
+        }
+
+    },
+
+    "import_export":{
+        "title": "Database Management",
+        "import": "About Import",
+        "export": "About Export",
+
+        "import_button": "Import",
+        "export_button": "Export",
+
+        "import_dialog":{
+            "page_1": {
+                "title": "Overwrite",
+                "text": "When importing, the current database will be overwritten. Please confirm before importing."
+            },
+
+            "page_2": {
+                "title": "Thumbnail",
+                "text": "The displayed thumbnails reference the path of images on the device. Changing devices or deleting images from the device will result in the thumbnails being unable to display. Please note that if you have selected an image,..."
+            }
+        },
+
+        
+        "backup_dialog":{
+            "page_1": {
+                "title": "File Name",
+                "text": "The backup file will be saved in the download folder with the name 'classifier_database(1,2,3)_backup.sqlite'."
+            },
+
+            "page_2": {
+                "title": "Attention",
+                "text": "The files will be saved with names like 'database1_backup1', 'database1_backup2', and so on.\n\nContinuing to make backups will consume storage space. Please remember to organize your download folder."
+            }
+        },
+
+        "back_up_confirm_dialog":{
+            "title": "Confirm",
+            "text": "Are you sure you want to back up the database?",
+            "yes": "Yes",
+            "no": "No"
+        },
+
+        "on_import": {
+            "complete": "Import Completed"
+        },
+
+        "on_backup": {
+            "complete": "Backup Completed"
+        }
+
+
+    },
+
+    "settings":{
+        "title": "Settings",
+        "privacy_policy": "Privacy Policy",
+        "change_theme": "Change Theme",
+        "change_database": "Change Database",
+        "current_database": "Current Database",
+
+        "language": "Language",
+
+        "database_dialog":{
+            "title": "Confirm",
+            "text": "Are you sure you want to change the database?(An advertisement will play every three times.)",
+            "yes": "Yes",
+            "no": "No"
+        },
+
+        "loading_dialog": "Loading...",
+
+        "on_change_database": {
+            "complete": "Completed",
+            "text": "Database has been switched.",
+            "ok": "OK"
+        }
+
+        
+    },
+
+    "search": {
+        "title": "Tags",
+        "found": "bookmarks found",
+        "search_button": "Search",
+        "clear_button": "Clear",
+        "change_genre": "Change Genre",
+
+        "search_dialog": {
+            "page_1":{
+                "title": "About this page",
+                "text": "On this page, you can search bookmarks by tags and change the genre of tags."
+            },
+
+            "page_2": {
+                "title": "About search",
+                "text": "You can search bookmarks by selecting tags from the list below.\n\nMultiple tags can be selected."
+            },
+
+            "page_3": {
+                "title": "About Genre",
+                "text": 
+                "The genre is a classification of tags, with the default being 'Uncategorized.'\n\nYou can select tags and change the genre."
+            }
+        },
+
+        "genre_dialog": {
+            "title": "Edit Genre",
+            "cancel": "Cancel",
+            "save": "Save",
+
+            "form": "Genre Name"
+        }
+
+    },
+
+    "external_url":{
+        "privacy_policy": "https://ez-bookmarks.pages.dev/en/privacy-policy",
+        "inquiry": "https://forms.gle/7FnqbLNPLsCTDM3q7"
+    },
+
+    "database":{
+        "no_genre": "Uncategorized"
+    },
+
+    "utils":{
+        "unexpected": "unexpected error occured",
+        "loading": "now loading..."
+    },
+
+    
+    
+
+    "locales(map)": {
+        "en": "English",
+        "ja": "日本語",
+        "es": "Español",
+        "pt": "Português"
+    }
+}

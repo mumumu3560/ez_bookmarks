@@ -7,7 +7,7 @@ part of 'aspect_switcher.dart';
 // **************************************************************************
 
 String _$aspectSwitcherNotifierHash() =>
-    r'dd57774cb0171b8534375fe6ade3c06331f3ab25';
+    r'018b868216d67eb973983445c083355d87519957';
 
 /// See also [AspectSwitcherNotifier].
 @ProviderFor(AspectSwitcherNotifier)

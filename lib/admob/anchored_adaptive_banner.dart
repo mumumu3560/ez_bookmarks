@@ -8,10 +8,6 @@ import 'package:ez_bookmarks/env/env.dart';
 /*
 
 
-
-
-
-
 class AdaptiveAdBanner extends StatelessWidget{
   final String requestId;
 
@@ -27,7 +23,29 @@ class AdaptiveAdBanner extends StatelessWidget{
 
 
 }
+
+
+
+
  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -111,25 +129,6 @@ class AdaptiveAdBanner extends StatelessWidget {
     });
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,3 +1,4 @@
+import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/utils/various.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -8,7 +9,10 @@ class AspectSwitcherNotifier extends _$AspectSwitcherNotifier{
 
   @override
   Future<double> build() async{
-    double aspect = await myDatabase.getAspectRatio();
+
+    final dbAdmin = ref.watch(dbAdminNotifierProvider);
+    //double aspect = await myDatabase.getAspectRatio();
+    double aspect = await dbAdmin.getAspectRatio();
 
     return aspect;
   }

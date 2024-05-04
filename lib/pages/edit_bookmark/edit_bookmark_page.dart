@@ -1,14 +1,16 @@
 import 'dart:io';
 
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
+import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/pages/edit_bookmark/components/almost_logic/almost_logic.dart';
 import 'package:flutter/material.dart';
-import 'package:ez_bookmarks/drift/database_1/database.dart';
+import 'package:ez_bookmarks/database/drift/database_1/database.dart';
 
 import 'package:ez_bookmarks/utils/various.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-class EditBookmarkPage extends StatefulWidget {
+class EditBookmarkPage extends ConsumerStatefulWidget {
   const EditBookmarkPage({
     super.key,
     required this.bookmark,
@@ -22,7 +24,7 @@ class EditBookmarkPage extends StatefulWidget {
   _EditBookmarkPageState createState() => _EditBookmarkPageState();
 }
 
-class _EditBookmarkPageState extends State<EditBookmarkPage> {
+class _EditBookmarkPageState extends ConsumerState<EditBookmarkPage> {
 
   final TextEditingController _contentsController = TextEditingController();
   final TextEditingController _urlController = TextEditingController();
@@ -48,7 +50,7 @@ class _EditBookmarkPageState extends State<EditBookmarkPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tagsByGenre = getTagsByGenre();
+    _tagsByGenre = getTagsByGenre(ref);
     setState(() {
       _contentsController.text = widget.bookmark.content;
       _urlController.text = widget.bookmark.urlText;
@@ -110,18 +112,22 @@ class _EditBookmarkPageState extends State<EditBookmarkPage> {
   // Fileが実際に存在するかチェック
   final fileExists = file.existsSync();
 
+  final translations = Translations.of(context);  
+
 
 
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('編集'),
+        title: Text(translations.edit_bookmarks.title),
         actions: [
           ElevatedButton(
             onPressed: (){
               editBookmark(
+                ref,
                 context,
                 _contentsController.text,
+                widget.bookmark.urlText,
                 _urlController.text,
                 tags,
                 imagePath,
@@ -129,9 +135,10 @@ class _EditBookmarkPageState extends State<EditBookmarkPage> {
               );
             
             },
-            child: const Text('完了'),
+            child: Text(translations.edit_bookmarks.complete),
           ),
 
+          /*
           IconButton(
             //helpマーク
             icon: const Icon(Icons.help),
@@ -156,6 +163,7 @@ class _EditBookmarkPageState extends State<EditBookmarkPage> {
             },
 
           ),
+           */
         ],
       ),
       body: Column(
@@ -172,7 +180,7 @@ class _EditBookmarkPageState extends State<EditBookmarkPage> {
                       //3行まで
                       maxLines: 3,
                       controller: _contentsController,
-                      decoration: const InputDecoration(labelText: '説明'),
+                      decoration: InputDecoration(labelText: translations.edit_bookmarks.explain),
                     ),
               
               
@@ -180,12 +188,7 @@ class _EditBookmarkPageState extends State<EditBookmarkPage> {
                       controller: _urlController,
                       decoration: const InputDecoration(
                         labelText: 'URL',
-                        /*
-                        suffixIcon: IconButton(
-                          icon: Icon(Icons.refresh),
-                          onPressed: _addTag,
-                        ),
-                         */
+            
                       ),
                     ),
               
@@ -193,7 +196,7 @@ class _EditBookmarkPageState extends State<EditBookmarkPage> {
               
                     ElevatedButton(
                       onPressed: _selectImage,
-                      child: const Text('画像を選択'),
+                      child: Text(translations.edit_bookmarks.select_image),
                     ),
               
                     //画像を表示
@@ -214,7 +217,7 @@ class _EditBookmarkPageState extends State<EditBookmarkPage> {
                     TextFormField(
                       controller: _tagController,
                       decoration: InputDecoration(
-                        labelText: 'タグを入力',
+                        labelText: translations.edit_bookmarks.input,
                         /*
                         
                          */
@@ -224,19 +227,13 @@ class _EditBookmarkPageState extends State<EditBookmarkPage> {
                           onPressed: _addTag,
                         ),
               
-                        /*
-                        suffix: ElevatedButton(
-                          onPressed: _addTag,
-                          child: Text('追加'),
-                        ),
-                         */
                         
                       ),
                     ),
               
                     SizedBox(height: SizeConfig.blockSizeVertical! * 2,),
               
-                    const Text("選択したタグ"),
+                    Text(translations.edit_bookmarks.tag_show),
               
                     Wrap(
                       //mainaxisの間隔
@@ -256,9 +253,10 @@ class _EditBookmarkPageState extends State<EditBookmarkPage> {
               
                     SizedBox(height: SizeConfig.blockSizeVertical! * 2,),
               
-                    const Text("すでに存在するタグ一覧"),
+                    Text(translations.edit_bookmarks.exist_tag),
               
                     FutureBuilder<Map<String, List<Tag>>>(
+                      //future: getTagsByGenre(ref),
                       future: _tagsByGenre,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
