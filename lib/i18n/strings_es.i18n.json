@@ -1,0 +1,276 @@
+{
+    "home": {
+        "title_with_tags": "Etiquetas seleccionados.",
+
+        "selected_tags_dialog":{
+            "title": "Etiquetas seleccionados.",
+            "close": "Cerrar"
+        },
+
+        "setting_list":{
+            "grid": "Cambiar rejilla",
+            "sort": "Ordenar",
+
+            "grid_dialog":{
+                "title": "Cambiar rejilla",
+                "close": "Cerrar",
+
+                "grid_num": "Número de rejilla",
+                "init_num": "inicial",
+                "now_num": "ahora"
+
+            },
+
+            "sort_dialog":{
+
+                "title": "Cambiar Ordenar",
+                "descending": "Descendente",
+                "close": "Cerrar",
+
+                "sort_list":{
+                    "created": "Creado en",
+                    "updated": "Actualizado en",
+                    "tag": "Etiquetas",
+                    "genre": "Genre",
+                    "random": "Random"
+                }
+
+            }
+        }
+        
+    },
+
+    "bookmark_card": {
+
+        "setting_list":{
+
+            "explain": "Descripción.",
+            "show_tags": "Mostrar etiquetas.",
+            "edit": "Editar",
+            "delete": "Borrar",
+
+            "expain_dialog": {
+                "title": "Descripción.",
+                "close": "Cerrar"
+            },
+
+            "tag_dialog":{
+                "title": "Etiquetas",
+                "close": "Cerrar",
+                "search": "+Buscar",
+                "and_search": {
+                    "title": "¿Qué es esto?",
+                    "close": "Cerrar",
+                    "text": "Puede buscar marcadores que incluyan la etiqueta que ha seleccionado actualmente y todas las etiquetas seleccionadas anteriormente (arriba a la izquierda)."
+                }
+            },
+
+            "delete_dialog": {
+                "title": "Confirmar la eliminación",
+                "confirm": "¿Seguro que desea borrar?",
+                "delete": "borrar",
+                "cancel": "Cancelar",
+
+                "snackbar": {
+                    "delete": "Borrado completado."
+                }
+            }
+
+            
+
+        }        
+    },
+
+    "drawer": {
+        "tags": "Buscar y editar por etiquetas",
+        "management": "Importación y copia de seguridad",
+        "settings": "Configuración",
+        "inquiry": "Contacto"
+    },
+
+
+    "add_bookmarks":{
+        "title": "Añadir",
+        "complete": "Hecho",
+        "explain": "Explicar",
+        "url": "URL",
+        "input": "Input etiquetas",
+        "select_image": "Seleccionar imagen",
+        "tag_show": "Etiquetas a añadir",
+        "exist_tag": "Etiquetas existentes",
+
+        "complete_dialog": {
+            "title": "Completo",
+            "text": "El marcador se ha añadido. Por favor, vuelva a cargarlo",
+            "close": "Cerrar"
+        },
+
+        "snackbar": {
+            "url_confirm": "Por favor, introduzca una URL.",
+            "existing_confirm": "Ya existe un marcador con la misma URL."
+        },
+        
+        "on_insert":{
+            "genre": "Sin categorizar"
+        }
+    },
+
+
+
+    "edit_bookmarks":{
+        "title": "Editar",
+        "complete": "Completar",
+        "explain": "Explicación",
+        "url": "URL",
+        "input": "Introducir etiquetas",
+        "select_image": "Seleccionar imagen",
+        "tag_show": "Etiquetas seleccionadas",
+        "exist_tag": "Lista de etiquetas existentes",
+    
+    
+        "snackbar": {
+            "url_confirm": "Por favor, introduzca una URL.",
+            "existing_confirm": "La URL ya está registrada."
+        }
+    },
+    
+
+    "import_export":{
+        "title": "Gestión de la base de datos",
+        "import": "Importar",
+        "export": "Exportar",
+    
+        "import_button": "Importar",
+        "export_button": "Exportar",
+    
+        "import_dialog":{
+            "page_1": {
+                "title": "Sobrescribir",
+                "text": "Al importar, la base de datos actual se sobrescribirá.\n\nPor favor, confirme antes de importar."
+            },
+    
+            "page_2": {
+                "title": "Miniaturas",
+                "text": "Las miniaturas mostradas hacen referencia a la ruta de las imágenes en el dispositivo.\n\nSi cambia de dispositivo o elimina las imágenes del dispositivo, las miniaturas pueden dejar de mostrarse."
+            }
+        },
+    
+        "backup_dialog":{
+            "page_1": {
+                "title": "Nombre de archivo",
+                "text": "El archivo de respaldo se guardará en la carpeta de descargas con el nombre classifier_database(1,2,3)_backup.sqlite."
+            },
+    
+            "page_2": {
+                "title": "Aviso",
+                "text": "Los nombres de los archivos guardados serán\ndatabase1_backup1\ndatabase1_backup2\n\nAl continuar realizando respaldos, puede ocupar mucho espacio. Recuerde ordenar la carpeta de descargas."
+            }
+        },
+    
+        "back_up_confirm_dialog":{
+            "title": "Confirmación",
+            "text": "¿Desea realizar una copia de seguridad?",
+            "yes": "Sí",
+            "no": "No"
+        },
+    
+        "on_import": {
+            "complete": "La base de datos ha sido importada."
+        },
+    
+        "on_backup": {
+            "complete": "La base de datos ha sido respaldada."
+        }
+    },
+    
+
+
+
+    
+    "settings":{
+        "title": "Configuración",
+        "privacy_policy": "Política de privacidad",
+        "change_theme": "Cambiar tema",
+        "change_database": "Cambiar base de datos",
+        "current_database": "Base de datos actual",
+    
+        "language": "Idioma",
+    
+        "database_dialog":{
+            "title": "Confirmación",
+            "text": "¿Desea cambiar la base de datos?\n(Se mostrará un anuncio cada 3 cambios)",
+            "yes": "Sí",
+            "no": "No"
+        },
+    
+        "loading_dialog": "Cargando...",
+    
+        "on_change_database": {
+            "complete": "Completo",
+            "text": "La base de datos ha sido cambiada.",
+            "ok": "OK"
+        }
+    },
+    
+
+    "search": {
+        "title": "Editar y buscar por etiquetas",
+        "found": "Marcadores encontrados",
+        "search_button": "Buscar",
+        "clear_button": "Limpiar",
+        "change_genre": "Cambiar género",
+    
+        "search_dialog": {
+            "page_1": {
+                "title": "Acerca de la página",
+                "text": "En esta página, puedes buscar marcadores por etiquetas y cambiar el género de las etiquetas."
+            },
+    
+            "page_2": {
+                "title": "Acerca de la búsqueda",
+                "text": "Puedes buscar marcadores seleccionando etiquetas de la lista de etiquetas registradas en los marcadores.\n\nPuedes seleccionar varias etiquetas."
+            },
+    
+            "page_3": {
+                "title": "Acerca del género",
+                "text": "El género es una clasificación de las etiquetas, siendo 'Sin clasificar' el valor predeterminado.\n\nPuedes seleccionar etiquetas y cambiar su género."
+            }
+        },
+    
+        "genre_dialog": {
+            "title": "Cambiar género",
+            "cancel": "Cancelar",
+            "save": "Guardar",
+    
+            "form": "Nombre del género"
+        }
+    },
+    
+
+
+
+    "database":{
+        "no_genre": "Sin categoría"
+    },
+
+    "external_url":{
+        "privacy_policy": "https://ez-bookmarks.pages.dev/en/privacy-policy",
+        "inquiry": "https://forms.gle/7FnqbLNPLsCTDM3q7"
+    },
+
+    
+    "utils":{
+        "unexpected": "Se ha producido un error inesperado.",
+        "loading": "Cargando..."
+    },
+
+
+    
+
+    "locales(map)": {
+        "en": "English",
+        "ja": "日本語",
+        "es": "Español",
+        "pt": "Português"
+    }
+}
