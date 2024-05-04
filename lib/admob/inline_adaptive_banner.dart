@@ -7,6 +7,10 @@ import 'package:ez_bookmarks/env/env.dart';
 /*
 
 
+
+
+
+
 class InlineAdaptiveAdBanner extends StatelessWidget{
   final String requestId;
   final int adHeight;
@@ -23,13 +27,19 @@ class InlineAdaptiveAdBanner extends StatelessWidget{
 }
 
 
-
-
-
-
-
-
  */
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -115,6 +125,13 @@ class InlineAdaptiveAdBanner extends StatelessWidget {
     });
   }
 }
+
+
+
+
+
+/*
+
 /*
 
 
@@ -123,4 +140,7 @@ class InlineAdaptiveAdBanner extends StatelessWidget {
 
  */
 
+
+
+ */
 

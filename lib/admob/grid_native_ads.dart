@@ -4,6 +4,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+
+
+/*
+class GridNativeAdWidget extends ConsumerStatefulWidget {
+  final double height;
+  final double width;
+
+  const GridNativeAdWidget({
+    super.key,
+    required this.height,
+    required this.width,
+  });
+
+  @override
+  _GridNativeAdWidgetState createState() => _GridNativeAdWidgetState();
+}
+
+class _GridNativeAdWidgetState extends ConsumerState<GridNativeAdWidget> {
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Container();
+  }
+
+
+}
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class GridNativeAdWidget extends ConsumerStatefulWidget {
   final double height;
   final double width;
@@ -107,3 +151,26 @@ class _GridNativeAdWidgetState extends ConsumerState<GridNativeAdWidget> {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+ */
