@@ -80,7 +80,7 @@
         "tags": "Search & Edit by Tags",
         "management": "Import and Backup",
         "settings": "Settings",
-        "inquiry": "Inquiry"
+        "inquiry": "Contact"
     },
 
 
@@ -104,7 +104,6 @@
         "snackbar": {
             "url_confirm": "Please enter a URL.",
             "existing_confirm": "A bookmark with the same URL already exists."
-
         },
 
         "on_insert":{
@@ -192,6 +191,8 @@
         "change_database": "Change Database",
         "current_database": "Current Database",
 
+        "language": "Language",
+
         "database_dialog":{
             "title": "Confirm",
             "text": "Are you sure you want to change the database?(An advertisement will play every three times.)",
@@ -263,7 +264,9 @@
     
 
     "locales(map)": {
-        "en": "en",
-        "ja": "ja"
+        "en": "English",
+        "ja": "日本語",
+        "es": "Español",
+        "pt": "Português"
     }
 }

@@ -56,7 +56,7 @@
 
             "tag_dialog":{
                 "title": "タグ一覧",
-                "close": "Close",
+                "close": "閉じる",
                 "search": "And検索",
                 "and_search": {
                     "title": "And検索とは？",
@@ -92,7 +92,7 @@
     "add_bookmarks":{
         "title": "追加",
         "complete": "完了",
-        "explain": "せつめい",
+        "explain": "説明",
         "url": "URL",
         "input": "タグを入力",
         "select_image": "画像を選択",
@@ -124,7 +124,7 @@
     "edit_bookmarks":{
         "title": "編集",
         "complete": "完了",
-        "explain": "せつめい",
+        "explain": "説明",
         "url": "URL",
         "input": "タグを入力",
         "select_image": "画像を選択",
@@ -163,7 +163,7 @@
         "backup_dialog":{
             "page_1": {
                 "title": "ファイル名",
-                "text": "バックアップファイルはclassifier_database(1,2,3)_backup.sqlite\nという名前でダウンローどフォルダに保存されます。"
+                "text": "バックアップファイルはclassifier_database(1,2,3)_backup.sqlite\nという名前でダウンロードフォルダに保存されます。"
             },
 
             "page_2": {
@@ -199,6 +199,8 @@
         "change_theme": "テーマ切り替え",
         "change_database": "データベースの切り替え",
         "current_database": "現在のデータベース",
+
+        "language": "言語",
 
         "database_dialog":{
             "title": "確認",
@@ -241,11 +243,11 @@
         },
 
         "genre_dialog": {
-            "title": "Edit Genre",
-            "cancel": "Cancel",
-            "save": "Save",
+            "title": "ジャンル変更",
+            "cancel": "キャンセル",
+            "save": "変更",
 
-            "form": "Genre Name"
+            "form": "ジャンル名"
         }
 
     },
@@ -268,7 +270,9 @@
     
 
     "locales(map)": {
-        "en": "英語",
-        "ja": "日本語"
+        "en": "English",
+        "ja": "日本語",
+        "es": "Español",
+        "pt": "Português"
     }
 }
