@@ -110,8 +110,8 @@ Future<Widget> loadImage(String? imagePath, String? url) async {
   
   if (url != null) {
     try {
-      //String? imageUrl = await fetchURLData(url);
-      String? imageUrl;
+      String? imageUrl = await fetchURLData(url);
+      //String? imageUrl;
       if (imageUrl != null) {
         return Image.network(imageUrl, fit: BoxFit.cover);
       }

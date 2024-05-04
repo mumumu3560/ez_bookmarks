@@ -1,7 +1,7 @@
 import 'package:ez_bookmarks/database/drift/database_1/database.dart';
 import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/almost_logic/almost_logic.dart';
-import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/bookmark_card/components/dialogs.dart';
+import 'package:ez_bookmarks/pages/bookmark_list/components/bookmark_card/components/dialogs.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/dialogs.dart';
 import 'package:ez_bookmarks/pages/edit_bookmark/edit_bookmark_page.dart';
 import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
@@ -33,6 +33,29 @@ class _BookmarkCardState extends ConsumerState<BookmarkCard> with AutomaticKeepA
 
   @override
   bool get wantKeepAlive => true;
+
+  String getFirstLine(String text) {
+    // テキストを改行で分割し、最初の行のみを返す
+    List<String> lines = text.split('\n');
+    if (lines.isNotEmpty) {
+      return lines.first;
+    } else {
+      return text;
+    }
+  }
+
+  late String contentFirstLine;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    contentFirstLine = getFirstLine(widget.bookmark.content);
+
+
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -50,10 +73,6 @@ class _BookmarkCardState extends ConsumerState<BookmarkCard> with AutomaticKeepA
             await dbAd.incrementWatchNum(widget.bookmark.id);
             await dbAd.updateUpdatedAtBookmark(widget.bookmark, DateTime.now());
 
-
-
-
-
             if (await canLaunchUrl(Uri.parse(widget.bookmark.urlText))) {
               await launchUrl(Uri.parse(widget.bookmark.urlText));
             }
@@ -67,9 +86,12 @@ class _BookmarkCardState extends ConsumerState<BookmarkCard> with AutomaticKeepA
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.bookmark.content,
+                      //widget.bookmark.content,
+                      contentFirstLine,
                       overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
+                    /*
                     Text(formatCreatedAt(widget.bookmark.createdAt), style: const TextStyle(color: Colors.grey)),
                     Row(
                       children: [
@@ -77,12 +99,22 @@ class _BookmarkCardState extends ConsumerState<BookmarkCard> with AutomaticKeepA
                         Text('${widget.bookmark.watchNum}'),
                       ],
                     ),
+                     */
                   ],
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  
+                  Text(formatCreatedAt(widget.bookmark.createdAt), style: const TextStyle(color: Colors.grey)),
+                  
+                  SizedBox(width: SizeConfig.blockSizeHorizontal!*2,),
+                  //const Icon(Icons.remove_red_eye),
+                  //Text('${widget.bookmark.watchNum}'),
+
+                  //SizedBox(width: SizeConfig.blockSizeHorizontal!*8,),
+
                   _buildPopupMenu(context),
                 ],
               ),

@@ -303,15 +303,17 @@ class _AddBookmarkPageState extends ConsumerState<AddBookmarkPage> {
             height: SizeConfig.blockSizeVertical! * 10,
             color: Colors.white,
             //TODO Admob
-            child: InlineAdaptiveAdBanner(
-              requestId: "ADD", 
-              adHeight: SizeConfig.blockSizeVertical!.toInt() * 10,
-            ),
+            
             
             /*
             
             
+            
             */
+            child: InlineAdaptiveAdBanner(
+              requestId: "ADD", 
+              adHeight: SizeConfig.blockSizeVertical!.toInt() * 10,
+            ),
           
           ),
 

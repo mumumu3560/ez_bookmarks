@@ -214,8 +214,10 @@ Future<void> _onSearch(List<Tag> tags) async{
                   ),
 
                   SizedBox(height: SizeConfig.blockSizeVertical! * 2,),
-                  
-                  Row(
+
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
 
                     children: [
@@ -266,6 +268,10 @@ Future<void> _onSearch(List<Tag> tags) async{
                       ),
                     ],
                   ),
+                    
+                  ),
+                  
+                  
 
                   SizedBox(height: SizeConfig.blockSizeVertical! * 2,),
                   
@@ -355,7 +361,9 @@ Future<void> _onSearch(List<Tag> tags) async{
               adHeight: SizeConfig.blockSizeVertical!.toInt() * 10,
             ),
             
+            
             /*
+            
             
             
             */

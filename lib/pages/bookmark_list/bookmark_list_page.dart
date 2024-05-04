@@ -1,8 +1,9 @@
+import 'package:async_preferences/async_preferences.dart';
 import 'package:ez_bookmarks/admob/grid_native_ads.dart';
 import 'package:ez_bookmarks/admob/inline_adaptive_banner.dart';
 import 'package:ez_bookmarks/i18n/strings.g.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/almost_logic/almost_logic.dart';
-import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/bookmark_card/bookmark_card.dart';
+import 'package:ez_bookmarks/pages/bookmark_list/components/bookmark_card/bookmark_card.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/dialogs.dart';
 import 'package:ez_bookmarks/pages/add_bookmark/add_bookmark_page.dart';
 import 'package:ez_bookmarks/pages/bookmark_list/components/logic_view_mix/drawer.dart';
@@ -12,10 +13,7 @@ import 'package:ez_bookmarks/riverpod/axis_count/axis_count_switcher.dart';
 import 'package:ez_bookmarks/riverpod/db_admin/db_admin.dart';
 import 'package:ez_bookmarks/riverpod/db_switcher/db_switcher.dart';
 import 'package:ez_bookmarks/riverpod/desc_or_asc/desc_or_asc_switcher.dart';
-import 'package:ez_bookmarks/riverpod/interstitial/interstitial_ad_notifier.dart';
-import 'package:ez_bookmarks/riverpod/local/language.dart';
 import 'package:ez_bookmarks/riverpod/sort_bookmarks/sort_kind_switcher.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -49,11 +47,11 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
 
   Widget? thumbnailImage;
 
+
   @override
   void initState() {
     super.initState();
-    final interstitialNotifier = ref.read(interstitialAdNotifierProvider.notifier);
-    interstitialNotifier.loadAd();
+
   }
 
   @override
@@ -288,18 +286,6 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
                             child: GridNativeAdWidget(height: gridHeight, width: gridWidth)
                           );
 
-                          /*
-                          return Container(
-                            //height: SizeConfig.blockSizeVertical! * 10,
-                            //color: Colors.white,
-                            //TODO Admob
-                            child: InlineAdaptiveAdBanner(
-                              requestId: "BOOKMARK", 
-                              //adHeight: SizeConfig.blockSizeVertical!.toInt() * 10,
-                              adHeight: constraints.maxHeight.toInt(),
-                            ),
-                          );
-                           */
                         }
                       );
 
@@ -324,12 +310,6 @@ class _BookMarkListState extends ConsumerState<BookMarkList> {
             
             
 
-            /*
-            
-
-            
-            
-            */
           ),
 
           SizedBox(height: SizeConfig.blockSizeVertical! * 2,),
